@@ -3,4 +3,4 @@ add_library(mqtt
             inc/mqtt_wrapper.h
             )
 
-target_include_directories(mqtt PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/inc")
+target_include_directories(mqtt PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/../mqtt/inc")

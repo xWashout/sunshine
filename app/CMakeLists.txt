@@ -6,8 +6,10 @@ add_executable(app
     inc/sunshinedesktop.h
     src/sunshinedesktop.ui
     )
+target_link_libraries(app PRIVATE mqtt)
 
 target_link_libraries(app PRIVATE Qt5::Widgets)
 qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 
 target_include_directories(app PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/inc")
+
