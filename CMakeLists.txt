@@ -11,33 +11,8 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_subdirectory(mqtt)
-add_subdirectory(app)
-#add_executable(sunshine
-#               app/src/main.cpp)
+add_subdirectory(prog/mqtt)
+add_subdirectory(prog/app)
 
-
-
-
-
-#if(ANDROID)
-#  add_library(sunshine SHARED
-#    app/main.cpp
-#    app/sunshinedesktop.cpp
-#    app/sunshinedesktop.h
-#    app/sunshinedesktop.ui
-#    ${TS_FILES}
-#  )
-#else()
-#  add_executable(sunshine
-#    app/main.cpp
-#    app/sunshinedesktop.cpp
-#    app/sunshinedesktop.h
-#    app/sunshinedesktop.ui
-#    ${TS_FILES}
-#  )
-#endif()
-
-#target_link_libraries(sunshine PRIVATE Qt5::Widgets)
-
-#qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
+include_directories(mqtt PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/inc")
+include_directories(app PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/inc")

@@ -1,5 +1,5 @@
 ﻿#include <inc/sunshinedesktop.h>
-
+#include <mqtt_wrapper.h> // ERROR
 #include <QApplication>
 
 int main(int argc, char *argv[])
