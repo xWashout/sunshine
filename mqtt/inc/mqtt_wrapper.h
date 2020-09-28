@@ -6,6 +6,7 @@ class MqttWrapper
 {
 public:
     MqttWrapper();
+    int Receiver();
 };
 
 #endif // MQTTWRAPPER_H
