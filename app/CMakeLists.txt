@@ -5,6 +5,10 @@ add_executable(app
     src/sunshinedesktop.cpp
     inc/sunshinedesktop.h
     src/sunshinedesktop.ui
+    inc/rasp3b_sensor_data.h
+    src/rasp3b_sensor_data.cpp
+    inc/rasp0_sensor_data.h
+    src/rasp0_sensor_data.cpp
     )
 
 target_link_libraries(app PRIVATE mqtt Qt5::Widgets paho-mqttpp3)
