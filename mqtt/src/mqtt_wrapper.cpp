@@ -12,25 +12,40 @@
 #include <mutex>
 #include <iostream>
 #include <atomic>
+#include <sunshinedesktop.h>
+#include <QString>
 
 std::mutex n;
 
 namespace mqtt_wrapper {
 
-int MqttWrapper::Receiver()
+int MqttWrapper::Receiver(sensor_data::Rasp0SensorData& rasp0SendorData,
+                          sensor_data::Rasp3BSensorData& rasp3BSendorData,
+                          SunshineDesktop& sunshineDesktop)
 {
+    connect(this, SIGNAL(setTempRasp3BSignal(const double)), &sunshineDesktop, SLOT(setTempRasp3BSignal(const double)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setHumRasp3BSignal(const double)), &sunshineDesktop, SLOT(setHumRasp3BSignal(const double)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setTvocRasp3BSignal(const double)), &sunshineDesktop, SLOT(setTvocRasp3BSignal(const double)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setCo2Rasp3BSignal(const double)), &sunshineDesktop, SLOT(setCo2Rasp3BSignal(const double)), Qt::QueuedConnection);
+
+    connect(this, SIGNAL(setTempRasp0Signal(const double)), &sunshineDesktop, SLOT(setTempRasp0Signal(const double)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setHumRasp0Signal(const double)), &sunshineDesktop, SLOT(setHumRasp0Signal(const double)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setTvocRasp0Signal(const double)), &sunshineDesktop, SLOT(setTvocRasp0Signal(const double)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setCo2Rasp0Signal(const double)), &sunshineDesktop, SLOT(setCo2Rasp0Signal(const double)), Qt::QueuedConnection);
+
     mqtt::connect_options connOpts;
     connOpts.set_keep_alive_interval(20);
     connOpts.set_clean_session(true);
 
-    mqtt::async_client cli(mqttConfData.serverAddress, mqttConfData.clientId);
+    mqtt::async_client cli(mqttConfData.serverAddress, mqttConfData.clientIdReceiver);
     mqtt::const_string_collection_ptr stringCollectionPtr(&mqttConfData.topics);
     try {
-        std::cerr << "Connecting to the MQTT server...\n";
+        std::cerr << "Connecting in publisher...\n";
         cli.connect(connOpts)->wait();
         cli.start_consuming();
         cli.subscribe(stringCollectionPtr, mqttConfData.qualityOfServices)->wait();
-        std::cerr << "Subscribe Ok!\n";
+        std::cerr << "Subscribe Ok in receiver!\n";
+        std::this_thread::sleep_for(std::chrono::milliseconds(100)); // To stabilize broker connection before message consumption
 
         // Consume messages
         while (true) {
@@ -39,7 +54,48 @@ int MqttWrapper::Receiver()
                 std::cerr << "Error during consume message!\n";
                 break;
             }
-            std::cerr << "Topic:" << msg->get_topic() << " \nData:" << msg->to_string() << std::endl;
+
+            std::cerr << "<debug> parseReceivedData topic: " << msg->get_topic() << "\n";
+            std::cerr << "<debug> parseReceivedData data: " << msg->to_string() << "\n";
+
+            const double dataFromMsg = QString::fromStdString(msg->to_string()).toDouble();
+            std::cerr << "<debug> parseReceivedData converted: " << dataFromMsg << "\n";
+
+            if(msg->get_topic() == mqttConfData.rasp3bTempTopic) {
+                rasp3BSendorData.setTemperature(dataFromMsg);
+                emit setTempRasp3BSignal(dataFromMsg);
+            }
+            else if(msg->get_topic() == mqttConfData.rasp3bHumTopic) {
+                rasp3BSendorData.setHumidity(dataFromMsg);
+                emit setHumRasp3BSignal(dataFromMsg);
+            }
+            else if(msg->get_topic() == mqttConfData.rasp3bTvocTopic) {
+                rasp3BSendorData.setTvoc(dataFromMsg);
+                emit setTvocRasp3BSignal(dataFromMsg);
+            }
+            else if(msg->get_topic() == mqttConfData.rasp3bCo2Topic) {
+                rasp3BSendorData.setCo2(dataFromMsg);
+                emit setCo2Rasp3BSignal(dataFromMsg);
+            }
+            else if(msg->get_topic() == mqttConfData.rasp0TempTopic) {
+                rasp0SendorData.setTemperature(dataFromMsg);
+                emit setTempRasp0Signal(dataFromMsg);
+            }
+            else if(msg->get_topic() == mqttConfData.rasp0HummTopic) {
+                rasp0SendorData.setHumidity(dataFromMsg);
+                emit setHumRasp0Signal(dataFromMsg);
+            }
+            else if(msg->get_topic() == mqttConfData.rasp0TvocTopic) {
+                rasp0SendorData.setTvoc(dataFromMsg);
+                emit setTvocRasp0Signal(dataFromMsg);
+            }
+            else if(msg->get_topic() == mqttConfData.rasp0Co2Topic) {
+                rasp0SendorData.setCo2(dataFromMsg);
+                emit setCo2Rasp0Signal(dataFromMsg);
+            }
+            else {
+                std::cerr << "Topic not matched";
+            }
         }
 
         // Disconnect
@@ -50,7 +106,7 @@ int MqttWrapper::Receiver()
         std::cerr << "OK";
     }
     catch (const mqtt::exception& exc) {
-        std::cerr << "MQTT Exception =%s\n";
+        std::cerr << "MQTT Exception in receiver -> " << exc.what() << "\n";
         return 1;
     }
     return 0;
@@ -107,7 +163,7 @@ public:
 int MqttWrapper::Publisher(const char* data, const std::string topic)
 {
     std::string	address  = mqttConfData.serverAddress,
-                clientID = mqttConfData.clientId;
+                clientID = mqttConfData.clientIdPublisher;
 
     std::cerr << "Initializing for server '" << address << "'..." << std::endl;
     mqtt::async_client client(address, clientID);
@@ -120,14 +176,14 @@ int MqttWrapper::Publisher(const char* data, const std::string topic)
     mqtt::will_options will(willmsg);
     conopts.set_will(will);
 
-    std::cerr << "  ...OK" << std::endl;
+    std::cerr << "  ...OK in publisher" << std::endl;
 
     try {
-        std::cerr << "\nConnecting..." << std::endl;
+        std::cerr << "\nConnecting in publisher..." << std::endl;
         mqtt::token_ptr conntok = client.connect(conopts);
-        std::cerr << "Waiting for the connection..." << std::endl;
+        std::cerr << "Waiting for the connection in publisher..." << std::endl;
         conntok->wait();
-        std::cerr << "  ...OK" << std::endl;
+        std::cerr << "  ...OK in publisher" << std::endl;
 
         mqtt::message_ptr pubmsg; // to delete supressing compile error!!!
         std::cerr << "\nSending final message..." << std::endl;
@@ -140,12 +196,11 @@ int MqttWrapper::Publisher(const char* data, const std::string topic)
         }
         std::cerr << "OK" << std::endl;
 
-
         // Disconnect
-        std::cerr << "\nDisconnecting..." << std::endl;
+        std::cerr << "\nDisconnecting in publisher..." << std::endl;
         conntok = client.disconnect();
         conntok->wait();
-        std::cerr << "  ...OK" << std::endl;
+        std::cerr << "  ...OK in publisher" << std::endl;
     }
     catch (const mqtt::exception& exc) {
         std::cerr << exc.what() << std::endl;

@@ -4,77 +4,84 @@ namespace sensor_data {
 
 double Rasp0SensorData::getHumidity()
 {
-    mtx.lock();
+    std::lock_guard lck(mtx);
     double humidity = this->humidity;
-    mtx.unlock();
+
     return humidity;
 }
 
 void Rasp0SensorData::setHumidity(double value)
 {
-    mtx.lock();
+    std::lock_guard lck(mtx);
     this->humidity = value;
-    mtx.unlock();
 }
 
 double Rasp0SensorData::getTvoc()
 {
-    mtx.lock();
+    std::lock_guard lck(mtx);
     double tvoc = this->tvoc;
-    mtx.unlock();
+
     return tvoc;
 }
 
 void Rasp0SensorData::setTvoc(double value)
 {
-    mtx.lock();
+    std::lock_guard lck(mtx);
     this->tvoc = value;
-    mtx.unlock();
 }
 
 double Rasp0SensorData::getCo2()
 {
-    mtx.lock();
+    std::lock_guard lck(mtx);
     double co2 = this->co2;
-    mtx.unlock();
+
     return co2;
 }
 
 void Rasp0SensorData::setCo2(double value)
 {
-    mtx.lock();
+    std::lock_guard lck(mtx);
     this->co2 = value;
-    mtx.unlock();
 }
 
 int Rasp0SensorData::getCurrentMeasFreq()
 {
-    mtx.lock();
+    std::lock_guard lck(mtx);
     double currentMeasFreq = this->currentMeasFreq;
-    mtx.unlock();
+
     return currentMeasFreq;
 }
 
 void Rasp0SensorData::setCurrentMeasFreq(int value)
 {
-    mtx.lock();
+    std::lock_guard lck(mtx);
     this->currentMeasFreq = value;
-    mtx.unlock();
 }
 
 double Rasp0SensorData::getTemperature()
 {
-    mtx.lock();
+    std::lock_guard lck(mtx);
     double temperature = this->temperature;
-    mtx.unlock();
+
     return temperature;
 }
 
 void Rasp0SensorData::setTemperature(double value)
 {
-    mtx.lock();
+    std::lock_guard lck(mtx);
     this->temperature = value;
-    mtx.unlock();
+}
+
+void Rasp0SensorData::debugPrint() {
+    std::lock_guard lck(mtx);
+    printf(
+    "--Rasp0 Data--\n"
+    "temperature = %f\n"
+    "humidity = %f\n"
+    "tvoc = %f\n"
+    "co2 = %f\n"
+    "currentMeasFreq = %d\n",
+    this->temperature, this->humidity, this->tvoc, this->co2, this->currentMeasFreq);
 }
 
 } // namespace sensor_data

@@ -29,6 +29,8 @@ public:
     void setCo2(double value);
     int getCurrentMeasFreq();
     void setCurrentMeasFreq(int value);
+
+    void debugPrint();
 };
 
 } // namespace sensor_data
