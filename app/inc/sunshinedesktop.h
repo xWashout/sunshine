@@ -5,6 +5,7 @@
 #include <mqtt_wrapper.h>
 #include <rasp0_sensor_data.h>
 #include <rasp3b_sensor_data.h>
+#include <qt_chart_wrapper.h>
 #include <thread>
 
 QT_BEGIN_NAMESPACE
@@ -14,11 +15,12 @@ QT_END_NAMESPACE
 class SunshineDesktop : public QMainWindow
 {
     Q_OBJECT
+
+    std::thread mqttReceiverThread;
     mqtt_wrapper::MqttWrapper mqttWrapper;
     sensor_data::Rasp0SensorData rasp0SendorData;
     sensor_data::Rasp3BSensorData rasp3BSendorData;
 
-    std::thread mqttReceiverThread;
 //    std::thread mqttPublisherThread;
 
     const std::string rasp3bFreqTemp { "rasp3bFreqTemp" };
@@ -31,15 +33,32 @@ class SunshineDesktop : public QMainWindow
     const std::string rasp0FreqTvoc { "rasp0FreqTvoc" };
     const std::string rasp0FreqCo2 { "rasp0FreqCo2" };
 
+    QGridLayout *layout;
+
+    qt_chart_wrapper::QtChartWrapper chartRasp3BCo2;
+    qt_chart_wrapper::QtChartWrapper chartRasp3BTvoc;
+    qt_chart_wrapper::QtChartWrapper chartRasp3BHum;
+    qt_chart_wrapper::QtChartWrapper chartRasp3BTemp;
+
+    qt_chart_wrapper::QtChartWrapper chartRasp0Co2;
+    qt_chart_wrapper::QtChartWrapper chartRasp0Tvoc;
+    qt_chart_wrapper::QtChartWrapper chartRasp0Hum;
+    qt_chart_wrapper::QtChartWrapper chartRasp0Temp;
+
 public:
+    Ui::SunshineDesktop *ui;
     SunshineDesktop(QWidget *parent = nullptr);
     ~SunshineDesktop();
 
-public slots:
+private slots:
     void on_co2FreqRasp3BButton_clicked();
     void on_tvocFreqRasp3BButton_clicked();
     void on_humFreqRasp3BButton_clicked();
     void on_tempFreqRasp3BButton_clicked();
+    void on_co2FreqRasp0Button_clicked();
+    void on_tvocFreqRasp0Button_clicked();
+    void on_humFreqRasp0Button_clicked();
+    void on_tempFreqRasp0Button_clicked();
 
 public slots:
     void setTempRasp3BSignal(const double value);
@@ -51,20 +70,5 @@ public slots:
     void setHumRasp0Signal(const double value);
     void setTvocRasp0Signal(const double value);
     void setCo2Rasp0Signal(const double value);
-
-public:
-    Ui::SunshineDesktop *ui;
-
-private slots:
-    void on_co2FreqRasp0Button_clicked();
-
-private slots:
-    void on_tvocFreqRasp0Button_clicked();
-
-private slots:
-    void on_humFreqRasp0Button_clicked();
-
-private slots:
-    void on_tempFreqRasp0Button_clicked();
 };
 #endif // SUNSHINEDESKTOP_H

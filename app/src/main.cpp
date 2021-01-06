@@ -4,8 +4,8 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    SunshineDesktop w;
-    w.show();
+    SunshineDesktop mainWindow;
+    mainWindow.show();
 
     return a.exec();
 }
