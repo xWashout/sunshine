@@ -749,6 +749,32 @@
      </item>
     </layout>
    </widget>
+   <widget class="QPushButton" name="stopCaptureDataButton">
+    <property name="geometry">
+     <rect>
+      <x>900</x>
+      <y>560</y>
+      <width>321</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>STOP CAPTURE DATA</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="startCaptureDataButton">
+    <property name="geometry">
+     <rect>
+      <x>1080</x>
+      <y>510</y>
+      <width>161</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>START CAPTURE DATA</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

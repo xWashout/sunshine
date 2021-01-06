@@ -17,9 +17,7 @@ class MqttWrapper: public QObject
 public:
     MqttWrapper() = default;
     ~MqttWrapper() = default;
-    int Receiver(sensor_data::Rasp0SensorData& rasp0SendorData,
-                 sensor_data::Rasp3BSensorData& rasp3BSendorDat0,
-                 SunshineDesktop& sunshineDesktop);
+    int Receiver(SunshineDesktop& sunshineDesktop);
     int Publisher(const char* data, const std::string topic);
 
 signals:

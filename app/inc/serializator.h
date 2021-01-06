@@ -2,6 +2,8 @@
 #define SERIALIZATOR_H
 
 #include <QFile>
+#include <rasp0_sensor_data.h>
+#include <rasp3b_sensor_data.h>
 
 namespace tool {
 
@@ -14,8 +16,9 @@ public:
     ~Serializator();
 
     void newSession(const std::string& fileName);
-    void addValueToFile(std::string dataType, const double value);
-    void loadSession();
+    void closeSession(sensor_data::Rasp0SensorData& rasp0SendorData,
+                      sensor_data::Rasp3BSensorData& rasp3BSendorData);
+    void loadSession(const std::string fileName);
 
 };
 

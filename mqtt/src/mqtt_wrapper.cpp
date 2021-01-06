@@ -19,9 +19,7 @@ std::mutex n;
 
 namespace mqtt_wrapper {
 
-int MqttWrapper::Receiver(sensor_data::Rasp0SensorData& rasp0SendorData,
-                          sensor_data::Rasp3BSensorData& rasp3BSendorData,
-                          SunshineDesktop& sunshineDesktop)
+int MqttWrapper::Receiver(SunshineDesktop& sunshineDesktop)
 {
     connect(this, SIGNAL(setTempRasp3BSignal(const double)), &sunshineDesktop, SLOT(setTempRasp3BSignal(const double)), Qt::QueuedConnection);
     connect(this, SIGNAL(setHumRasp3BSignal(const double)), &sunshineDesktop, SLOT(setHumRasp3BSignal(const double)), Qt::QueuedConnection);
@@ -62,35 +60,27 @@ int MqttWrapper::Receiver(sensor_data::Rasp0SensorData& rasp0SendorData,
             std::cerr << "<debug> parseReceivedData converted: " << dataFromMsg << "\n";
 
             if(msg->get_topic() == mqttConfData.rasp3bTempTopic) {
-                rasp3BSendorData.addTemperatureMeasurement(dataFromMsg);
                 emit setTempRasp3BSignal(dataFromMsg);
             }
             else if(msg->get_topic() == mqttConfData.rasp3bHumTopic) {
-                rasp3BSendorData.addHumidityMeasurement(dataFromMsg);
                 emit setHumRasp3BSignal(dataFromMsg);
             }
             else if(msg->get_topic() == mqttConfData.rasp3bTvocTopic) {
-                rasp3BSendorData.addTvocMeasurement(dataFromMsg);
                 emit setTvocRasp3BSignal(dataFromMsg);
             }
-            else if(msg->get_topic() == mqttConfData.rasp3bCo2Topic) {
-                rasp3BSendorData.addCo2Measurement(dataFromMsg);
+            else if(msg->get_topic() == mqttConfData.rasp3bCo2Topic) { 
                 emit setCo2Rasp3BSignal(dataFromMsg);
             }
             else if(msg->get_topic() == mqttConfData.rasp0TempTopic) {
-                rasp0SendorData.addTemperatureMeasurement(dataFromMsg);
                 emit setTempRasp0Signal(dataFromMsg);
             }
             else if(msg->get_topic() == mqttConfData.rasp0HummTopic) {
-                rasp0SendorData.addHumidityMeasurement(dataFromMsg);
                 emit setHumRasp0Signal(dataFromMsg);
             }
             else if(msg->get_topic() == mqttConfData.rasp0TvocTopic) {
-                rasp0SendorData.addTvocMeasurement(dataFromMsg);
                 emit setTvocRasp0Signal(dataFromMsg);
             }
             else if(msg->get_topic() == mqttConfData.rasp0Co2Topic) {
-                rasp0SendorData.addCo2Measurement(dataFromMsg);
                 emit setCo2Rasp0Signal(dataFromMsg);
             }
             else {

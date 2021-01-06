@@ -2,6 +2,7 @@
 #define SUNSHINEDESKTOP_H
 
 #include <QMainWindow>
+#include <QWindow>
 #include <mqtt_wrapper.h>
 #include <rasp0_sensor_data.h>
 #include <rasp3b_sensor_data.h>
@@ -58,6 +59,8 @@ class SunshineDesktop : public QMainWindow
     qt_chart_wrapper::QtChartWrapper chartRasp0Hum;
     qt_chart_wrapper::QtChartWrapper chartRasp0Temp;
 
+    QWindow* newSessionWindow;
+
 public:
     Ui::SunshineDesktop *ui;
     SunshineDesktop(QWidget *parent = nullptr);
@@ -75,6 +78,8 @@ private slots:
     void newSessionAction_clicked();
     void loadSessionAction_clicked();
     void measAnalyzerAction_clicked();
+    void on_stopCaptureDataButton_clicked();
+    void on_startCaptureDataButton_clicked();
 
 public slots:
     void setTempRasp3BSignal(const double value);
