@@ -1,41 +1,16 @@
 #include <qt_chart_wrapper.h>
 
-// The main window to which you add toolbars,
-// menubars, widgets and status bar
 #include <QtWidgets/QMainWindow>
-
-// Widget used to display charts
 #include <QtCharts/QChartView>
-
-// Used to draw bars representing data provided
-// grouped into categories
 #include <QtCharts/QBarSeries>
-
-// Represents 1 set of bars in a bar chart
 #include <QtCharts/QBarSet>
-
-// Displays the color used to represent each
-// QBarSet
 #include <QtCharts/QLegend>
-
-// Adds categories to the charts axes
 #include <QtCharts/QBarCategoryAxis>
-
-// Used to create stacked bar charts
 #include <QtCharts/QHorizontalStackedBarSeries>
-
-// Used to create a line chart
 #include <QtCharts/QLineSeries>
-
-// Used to change names on axis
 #include <QtCharts/QCategoryAxis>
-
-// Used to make Pie Charts
 #include <QtCharts/QPieSeries>
 #include <QtCharts/QPieSlice>
-
-// Define the scope for your variables and functions
-
 
 namespace qt_chart_wrapper{
 
@@ -43,65 +18,65 @@ QT_CHARTS_USE_NAMESPACE
 
 QtChartWrapper::QtChartWrapper()
 {
-    lineSeries = new QLineSeries();
-    chart = new QChart();
-    chartView = new QChartView();
-    barSeries = new QBarSeries();
-    barData = new QBarSet("");
-    axis = new QBarCategoryAxis();
+    this->lineSeries = new QLineSeries();
+    this->chart = new QChart();
+    this->chartView = new QChartView();
+    this->barSeries = new QBarSeries();
+    this->barData = new QBarSet("");
+    this->axis = new QBarCategoryAxis();
 }
 
 void QtChartWrapper::initLineChart(const QString title)
 {
-    lineSeries->setPointLabelsVisible(true);
-    lineSeries->setPointLabelsColor(Qt::black);
-    lineSeries->setPointLabelsFormat("@yPoint");
+    this->lineSeries->setPointLabelsVisible(true);
+    this->lineSeries->setPointLabelsColor(Qt::black);
+    this->lineSeries->setPointLabelsFormat("@yPoint");
 
     QFont fontPoint("Times", 13, QFont::ExtraBold);
-    lineSeries->setPointLabelsFont(fontPoint);
-    lineSeries->setPointLabelsClipping(false);
-    lineSeries->setPointLabelsColor("red");
+    this->lineSeries->setPointLabelsFont(fontPoint);
+    this->lineSeries->setPointLabelsClipping(false);
+    this->lineSeries->setPointLabelsColor("red");
 
-    chart->legend()->hide();
-    chart->addSeries(lineSeries);
-    chart->createDefaultAxes();
+    this->chart->legend()->hide();
+    this->chart->addSeries(lineSeries);
+    this->chart->createDefaultAxes();
 
     QFont font;
     font.setPixelSize(18);
-    chart->setTitleFont(font);
-    chart->setTitleBrush(QBrush(Qt::black));
-    chart->setTitle(title);
+    this->chart->setTitleFont(font);
+    this->chart->setTitleBrush(QBrush(Qt::black));
+    this->chart->setTitle(title);
 
     QPen pen(QRgb(0x000000));
     pen.setWidth(1);
-    lineSeries->setPen(pen);
-    chartView->setMinimumWidth(500);
-    chartView->setChart(chart);
-    chartView->setRenderHint(QPainter::Antialiasing);
+    this->lineSeries->setPen(pen);
+    this->chartView->setMinimumWidth(500);
+    this->chartView->setChart(chart);
+    this->chartView->setRenderHint(QPainter::Antialiasing);
 }
 
 void QtChartWrapper::initBarChart(const QString title)
 {
-    barData->setLabel(title);
-    barSeries->setLabelsVisible(true);
-    barSeries->append(barData);
-    chart->addSeries(barSeries);
-    chart->setTitle(title);
+    this->barData->setLabel(title);
+    this->barSeries->setLabelsVisible(true);
+    this->barSeries->append(barData);
+    this->chart->addSeries(barSeries);
+    this->chart->setTitle(title);
 
     QBarCategoryAxis *axis = new QBarCategoryAxis();
     QFont font;
     font.setPixelSize(18);
-    chart->setTitleFont(font);
-    chart->setTitleBrush(QBrush(Qt::black));
-    chart->createDefaultAxes();
-    chart->setAxisX(axis, barSeries);
-    chart->legend()->setVisible(true);
-    chart->legend()->setAlignment(Qt::AlignBottom);
+    this->chart->setTitleFont(font);
+    this->chart->setTitleBrush(QBrush(Qt::black));
+    this->chart->createDefaultAxes();
+    this->chart->setAxisX(axis, barSeries);
+    this->chart->legend()->setVisible(true);
+    this->chart->legend()->setAlignment(Qt::AlignBottom);
 
-    chartView = new QChartView(chart);
-    chartView->setRenderHint(QPainter::Antialiasing);
+    this->chartView = new QChartView(chart);
+    this->chartView->setRenderHint(QPainter::Antialiasing);
 
-    chartView->setMinimumWidth(700);
+    this->chartView->setMinimumWidth(700);
 
     QPalette pal = qApp->palette();
 
