@@ -7,6 +7,9 @@
 #include <rasp3b_sensor_data.h>
 #include <qt_chart_wrapper.h>
 #include <thread>
+#include <serializator.h>
+#include <sessions_analyzer.h>
+#include <data_base_handler.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class SunshineDesktop; }
@@ -16,10 +19,15 @@ class SunshineDesktop : public QMainWindow
 {
     Q_OBJECT
 
+    bool dataStoringStatus = false;
+
     std::thread mqttReceiverThread;
     mqtt_wrapper::MqttWrapper mqttWrapper;
     sensor_data::Rasp0SensorData rasp0SendorData;
     sensor_data::Rasp3BSensorData rasp3BSendorData;
+    tool::Serializator serializator;
+    tool::SessionsAnalyzer sessionAnalyzer;
+    data_base::DataBaseHandler dataBaseHandler;
 
 //    std::thread mqttPublisherThread;
 
@@ -34,6 +42,11 @@ class SunshineDesktop : public QMainWindow
     const std::string rasp0FreqCo2 { "rasp0FreqCo2" };
 
     QGridLayout *layout;
+    QMenu* menu;
+    QMenuBar *menuBar;
+    QAction *newSessionAction;
+    QAction *loadSessionAction;
+    QAction *measAnalyzerAction;
 
     qt_chart_wrapper::QtChartWrapper chartRasp3BCo2;
     qt_chart_wrapper::QtChartWrapper chartRasp3BTvoc;
@@ -59,6 +72,9 @@ private slots:
     void on_tvocFreqRasp0Button_clicked();
     void on_humFreqRasp0Button_clicked();
     void on_tempFreqRasp0Button_clicked();
+    void newSessionAction_clicked();
+    void loadSessionAction_clicked();
+    void measAnalyzerAction_clicked();
 
 public slots:
     void setTempRasp3BSignal(const double value);

@@ -11,6 +11,12 @@ add_executable(app
     src/rasp0_sensor_data.cpp
     inc/qt_chart_wrapper.h
     src/qt_chart_wrapper.cpp
+    inc/sessions_analyzer.h
+    src/sessions_analyzer.cpp
+    inc/serializator.h
+    src/serializator.cpp
+    inc/data_base_handler.h
+    src/data_base_handler.cpp
     )
 
 #target_compile_options(app PUBLIC -fsanitize=address)

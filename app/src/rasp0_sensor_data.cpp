@@ -2,86 +2,60 @@
 
 namespace sensor_data {
 
-double Rasp0SensorData::getHumidity()
+Rasp0SensorData::Rasp0SensorData()
 {
-    std::lock_guard lck(mtx);
-    double humidity = this->humidity;
-
-    return humidity;
+    temperatureMeasurements.reserve(100);
+    humidityMeasurements.reserve(100);
+    tvocMeasurements.reserve(100);
+    co2Measurements.reserve(100);
 }
 
-void Rasp0SensorData::setHumidity(double value)
+const std::vector<double> Rasp0SensorData::getTemperatureMeasurements() const
 {
     std::lock_guard lck(mtx);
-    this->humidity = value;
+    return this->temperatureMeasurements;
 }
 
-double Rasp0SensorData::getTvoc()
+const std::vector<double> Rasp0SensorData::getHumidityMeasurements() const
 {
     std::lock_guard lck(mtx);
-    double tvoc = this->tvoc;
-
-    return tvoc;
+    return this->humidityMeasurements;
 }
 
-void Rasp0SensorData::setTvoc(double value)
+const std::vector<double> Rasp0SensorData::getTvocMeasurements() const
 {
     std::lock_guard lck(mtx);
-    this->tvoc = value;
+    return this->tvocMeasurements;
 }
 
-double Rasp0SensorData::getCo2()
+const std::vector<double> Rasp0SensorData::getCo2Measurements() const
 {
     std::lock_guard lck(mtx);
-    double co2 = this->co2;
-
-    return co2;
+    return this->co2Measurements;
 }
 
-void Rasp0SensorData::setCo2(double value)
+void Rasp0SensorData::addTemperatureMeasurement(double value)
 {
     std::lock_guard lck(mtx);
-    this->co2 = value;
+    this->temperatureMeasurements.emplace_back(value);
 }
 
-int Rasp0SensorData::getCurrentMeasFreq()
+void Rasp0SensorData::addHumidityMeasurement(double value)
 {
     std::lock_guard lck(mtx);
-    double currentMeasFreq = this->currentMeasFreq;
-
-    return currentMeasFreq;
+    this->humidityMeasurements.emplace_back(value);
 }
 
-void Rasp0SensorData::setCurrentMeasFreq(int value)
+void Rasp0SensorData::addTvocMeasurement(double value)
 {
     std::lock_guard lck(mtx);
-    this->currentMeasFreq = value;
+    this->tvocMeasurements.emplace_back(value);
 }
 
-double Rasp0SensorData::getTemperature()
+void Rasp0SensorData::addCo2Measurement(double value)
 {
     std::lock_guard lck(mtx);
-    double temperature = this->temperature;
-
-    return temperature;
-}
-
-void Rasp0SensorData::setTemperature(double value)
-{
-    std::lock_guard lck(mtx);
-    this->temperature = value;
-}
-
-void Rasp0SensorData::debugPrint() {
-    std::lock_guard lck(mtx);
-    printf(
-    "--Rasp0 Data--\n"
-    "temperature = %f\n"
-    "humidity = %f\n"
-    "tvoc = %f\n"
-    "co2 = %f\n"
-    "currentMeasFreq = %d\n",
-    this->temperature, this->humidity, this->tvoc, this->co2, this->currentMeasFreq);
+    this->co2Measurements.emplace_back(value);
 }
 
 } // namespace sensor_data
