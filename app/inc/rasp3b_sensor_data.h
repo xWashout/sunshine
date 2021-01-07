@@ -29,6 +29,8 @@ public:
     void addHumidityMeasurement(double value);
     void addTvocMeasurement(double value);
     void addCo2Measurement(double value);
+
+    void clearData();
 };
 
 } // namespace sensor_data

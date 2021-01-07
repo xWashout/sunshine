@@ -42,7 +42,7 @@ SunshineDesktop::SunshineDesktop(QWidget *parent)
     connect(this->loadSessionAction, &QAction::triggered, this, &SunshineDesktop::loadSessionAction_clicked);
     connect(this->measAnalyzerAction, &QAction::triggered, this, &SunshineDesktop::measAnalyzerAction_clicked);
 
-    this->menu = this->menuBar->addMenu("--> Click for options <--");
+    this->menu = this->menuBar->addMenu("START");
     this->menu->addAction(this->newSessionAction);
     this->menu->addAction(this->loadSessionAction);
     this->menu->addAction(this->measAnalyzerAction);
@@ -140,7 +140,17 @@ void SunshineDesktop::newSessionAction_clicked()
 
     qDebug() << "<Debug> Action load session application =" << fileName;
     if(fileName != "") {
-        this->serializator.newSession(fileName.toStdString());
+        this->chartRasp0Temp.cleanCharts();
+        this->chartRasp0Hum.cleanCharts();
+        this->chartRasp0Tvoc.cleanCharts();
+        this->chartRasp0Co2.cleanCharts();
+
+        this->chartRasp3BTemp.cleanCharts();
+        this->chartRasp3BHum.cleanCharts();
+        this->chartRasp3BTvoc.cleanCharts();
+        this->chartRasp3BCo2.cleanCharts();
+
+        this->serializator.newSession(fileName.toStdString(), this->rasp0SendorData, this->rasp3BSendorData);
     } else {
         qDebug() <<"<Debug> Session isn't created";
         return;
@@ -161,7 +171,7 @@ void SunshineDesktop::loadSessionAction_clicked()
     qDebug() << "<Debug> Action save session application" << fileName;
 
     if(fileName != "") {
-        this->serializator.loadSession(fileName.toStdString());
+        this->serializator.loadSession(fileName.toStdString(), this->rasp0SendorData, this->rasp3BSendorData);
     } else {
         qDebug() <<"<Debug> No file selected";
         return;

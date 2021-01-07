@@ -1,4 +1,5 @@
 #include "rasp3b_sensor_data.h"
+#include <QDebug>
 
 namespace sensor_data {
 
@@ -56,6 +57,15 @@ void Rasp3BSensorData::addCo2Measurement(double value)
 {
     std::lock_guard lck(mtx);
     this->co2Measurements.emplace_back(value);
+}
+
+void Rasp3BSensorData::clearData()
+{
+    this->co2Measurements.clear();
+    this->tvocMeasurements.clear();
+    this->humidityMeasurements.clear();
+    this->temperatureMeasurements();
+    qDebug() << "Rasp3BSensorData cleaned";
 }
 
 } // namespace sensor_data

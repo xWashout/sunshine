@@ -17,7 +17,6 @@ public:
     QChart *chart;
     QBarSet *barData;
     QBarCategoryAxis *axis;
-    QLogValueAxis *axisY;
 
     QtChartWrapper();
     ~QtChartWrapper() = default;
@@ -27,6 +26,8 @@ public:
 
     void addPointToLineChart(const double yValue);
     void addPointToBarChart(const double yValue);
+
+    void cleanCharts();
 
 private:
     int index = 0; // reset after measuremenetLimit value
