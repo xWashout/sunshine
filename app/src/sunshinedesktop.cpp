@@ -23,15 +23,14 @@ SunshineDesktop::SunshineDesktop(QWidget *parent)
 
     this->chartRasp3BTemp.initLineChart("Temperature (Celsius)");
     this->chartRasp3BHum.initLineChart("Humidity (%)");
-    this->chartRasp3BTvoc.initBarChart("TVOC");
-    this->chartRasp3BCo2.initBarChart("Co2");
+    this->chartRasp3BTvoc.initLineChart("TVOC");
+    this->chartRasp3BCo2.initLineChart("Co2");
 
     this->chartRasp0Temp.initLineChart("Temperature (Celsius)");
     this->chartRasp0Hum.initLineChart("Humidity (%)");
-    this->chartRasp0Tvoc.initBarChart("TVOC");
-    this->chartRasp0Co2.initBarChart("Co2");
+    this->chartRasp0Tvoc.initLineChart("TVOC");
+    this->chartRasp0Co2.initLineChart("Co2");
 
-    this->newSessionWindow = new QWindow();
     this->layout = new QGridLayout();
     this->menuBar = new QMenuBar(nullptr);
     this->menu = new QMenu();
@@ -82,7 +81,8 @@ SunshineDesktop::SunshineDesktop(QWidget *parent)
 
 SunshineDesktop::~SunshineDesktop()
 {
-    delete ui;
+    this->serializator.closeSession(this->rasp0SendorData, this->rasp3BSendorData);
+    delete this->ui;
 }
 
 void SunshineDesktop::on_tempFreqRasp3BButton_clicked()
@@ -135,8 +135,16 @@ void SunshineDesktop::on_co2FreqRasp0Button_clicked()
 
 void SunshineDesktop::newSessionAction_clicked()
 {
-    newSessionWindow->show();
-    qDebug() << "<Debug> Action load session application =" << 2;
+    QString fileName = QFileDialog::getSaveFileName(this,
+        tr("Save Session"), "/home/washout/repos/sunshine/serialized_sessions");
+
+    qDebug() << "<Debug> Action load session application =" << fileName;
+    if(fileName != "") {
+        this->serializator.newSession(fileName.toStdString());
+    } else {
+        qDebug() <<"<Debug> Session isn't created";
+        return;
+    }
 
     this->ui->rasp0DataWidget->setEnabled(true);
     this->ui->rasp3bDataWidget->setEnabled(true);
@@ -144,7 +152,6 @@ void SunshineDesktop::newSessionAction_clicked()
     if(this->ui->stopCaptureDataButton->isEnabled()) {
         this->ui->stopCaptureDataButton->setEnabled(false);
     }
-    this->dataStoringStatus = true;
 }
 
 void SunshineDesktop::loadSessionAction_clicked()
@@ -165,7 +172,6 @@ void SunshineDesktop::loadSessionAction_clicked()
     if(this->ui->stopCaptureDataButton->isEnabled()) {
         this->ui->stopCaptureDataButton->setEnabled(false);
     }
-    this->dataStoringStatus = true;
 }
 
 void SunshineDesktop::measAnalyzerAction_clicked()
@@ -175,7 +181,7 @@ void SunshineDesktop::measAnalyzerAction_clicked()
     this->ui->rasp3bDataWidget->setEnabled(false);
     this->ui->startCaptureDataButton->setEnabled(false);
     this->ui->stopCaptureDataButton->setEnabled(false);
-    qDebug() << "<Debug> Action analyzer application" << 4;
+    qDebug() << "<Debug> Action analyzer application";
 }
 
 void SunshineDesktop::on_startCaptureDataButton_clicked()
@@ -213,7 +219,7 @@ void SunshineDesktop::setHumRasp3BSignal(const double value)
 void SunshineDesktop::setTvocRasp3BSignal(const double value)
 {
     if(this->dataStoringStatus) {
-        this->chartRasp3BTvoc.addPointToBarChart(value);
+        this->chartRasp3BTvoc.addPointToLineChart(value);
         this->ui->tvocRasp3BMeasLabel->setText(QString::number(value));
         this->rasp3BSendorData.addTvocMeasurement(value);
     }
@@ -222,7 +228,7 @@ void SunshineDesktop::setTvocRasp3BSignal(const double value)
 void SunshineDesktop::setCo2Rasp3BSignal(const double value)
 {
     if(this->dataStoringStatus) {
-        this->chartRasp3BCo2.addPointToBarChart(value);
+        this->chartRasp3BCo2.addPointToLineChart(value);
         this->ui->co2Rasp3BMeasLabel->setText(QString::number(value));
         this->rasp3BSendorData.addCo2Measurement(value);
     }
@@ -249,7 +255,7 @@ void SunshineDesktop::setHumRasp0Signal(const double value)
 void SunshineDesktop::setTvocRasp0Signal(const double value)
 {
     if(this->dataStoringStatus) {
-        this->chartRasp0Tvoc.addPointToBarChart(value);
+        this->chartRasp0Tvoc.addPointToLineChart(value);
         this->ui->tvocRasp0MeasLabel->setText(QString::number(value));
         this->rasp0SendorData.addTvocMeasurement(value);
     }
@@ -258,7 +264,7 @@ void SunshineDesktop::setTvocRasp0Signal(const double value)
 void SunshineDesktop::setCo2Rasp0Signal(const double value)
 {
     if(this->dataStoringStatus) {
-        this->chartRasp0Co2.addPointToBarChart(value);
+        this->chartRasp0Co2.addPointToLineChart(value);
         this->ui->co2Rasp0MeasLabel->setText(QString::number(value));
         this->rasp0SendorData.addCo2Measurement(value);
     }

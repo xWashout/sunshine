@@ -38,7 +38,7 @@ int MqttWrapper::Receiver(SunshineDesktop& sunshineDesktop)
     mqtt::async_client cli(mqttConfData.serverAddress, mqttConfData.clientIdReceiver);
     mqtt::const_string_collection_ptr stringCollectionPtr(&mqttConfData.topics);
     try {
-        std::cerr << "Connecting in publisher...\n";
+        std::cerr << "Connecting in receiver...\n";
         cli.connect(connOpts)->wait();
         cli.start_consuming();
         cli.subscribe(stringCollectionPtr, mqttConfData.qualityOfServices)->wait();

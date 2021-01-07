@@ -24,14 +24,11 @@ QtChartWrapper::QtChartWrapper()
     this->barSeries = new QBarSeries();
     this->barData = new QBarSet("");
     this->axis = new QBarCategoryAxis();
+    this->axisY = new QLogValueAxis();
 }
 
 void QtChartWrapper::initLineChart(const QString title)
 {
-    this->lineSeries->setPointLabelsVisible(true);
-    this->lineSeries->setPointLabelsColor(Qt::black);
-    this->lineSeries->setPointLabelsFormat("@yPoint");
-
     QFont fontPoint("Times", 13, QFont::ExtraBold);
     this->lineSeries->setPointLabelsFont(fontPoint);
     this->lineSeries->setPointLabelsClipping(false);
@@ -46,6 +43,10 @@ void QtChartWrapper::initLineChart(const QString title)
     this->chart->setTitleFont(font);
     this->chart->setTitleBrush(QBrush(Qt::black));
     this->chart->setTitle(title);
+
+    this->axisY->setRange(20, 1000);
+    this->axisY->setTitleText("ddasdsadB");
+    this->chart->addAxis(axisY, Qt::AlignLeft);
 
     QPen pen(QRgb(0x000000));
     pen.setWidth(1);
@@ -87,19 +88,37 @@ void QtChartWrapper::initBarChart(const QString title)
 
 void QtChartWrapper::addPointToLineChart(const double yValue)
 {
-    chart->removeSeries(lineSeries);
-    lineSeries->append(++index, yValue);
-    chart->addSeries(lineSeries);
-    chart->createDefaultAxes();
+    if(this->index < this->measuremenetLimit) {
+        this->chart->removeSeries(this->lineSeries);
+        lineSeries->append(++index, yValue);
+        this->chart->addSeries(this->lineSeries);
+        this->chart->createDefaultAxes();
+    }
+    else {
+        this->index = 0;
+        this->lineSeries->clear();
+    }
 }
 
 void QtChartWrapper::addPointToBarChart(const double yValue)
 {
-    chart->removeSeries(barSeries);
-    *barData << yValue;
-    barSeries->append(barData);
-    chart->addSeries(barSeries);
-    chart->createDefaultAxes();
+    if(this->index < this->measuremenetLimit) {
+        ++index;
+        this->chart->removeSeries(this->barSeries);
+
+
+        this->barData->append(yValue);
+        this->barSeries->append(this->barData);
+        this->chart->addSeries(this->barSeries);
+
+
+        this->chart->createDefaultAxes();
+    }
+    else {
+        this->index = 0;
+        this->barSeries->clear();
+        this->barData = new QBarSet("");
+    }
 }
 
 } // qt_chart_wrapper

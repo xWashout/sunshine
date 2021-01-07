@@ -59,8 +59,6 @@ class SunshineDesktop : public QMainWindow
     qt_chart_wrapper::QtChartWrapper chartRasp0Hum;
     qt_chart_wrapper::QtChartWrapper chartRasp0Temp;
 
-    QWindow* newSessionWindow;
-
 public:
     Ui::SunshineDesktop *ui;
     SunshineDesktop(QWidget *parent = nullptr);

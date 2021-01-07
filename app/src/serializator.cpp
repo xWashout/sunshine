@@ -16,14 +16,15 @@ Serializator::~Serializator()
 {
 }
 
-void Serializator::newSession(const std::string& fileName)
+void Serializator::newSession(const std::string fileName)
 {
     if(this->sessionFile == NULL) {
         this->sessionFile = fopen(fileName.c_str(), "a+");
+        fputs("opened", this->sessionFile);
     }
     else {
         qDebug() << "File already opened, close file and open new";
-        fclose(this->sessionFile);
+        fclose(this->sessionFile); // TRZEBA ZASTOROWAC DANE !!! TUTAJ WYWOLAC closeSession()
         this->sessionFile = fopen(fileName.c_str(), "a+");
     }
 
@@ -40,7 +41,7 @@ void Serializator::closeSession(sensor_data::Rasp0SensorData& rasp0SendorData,
                                 sensor_data::Rasp3BSensorData& rasp3BSendorData)
 {
     if(this->sessionFile == NULL) {
-        qDebug() << "close session-> File didn't open, serialization failed";
+        qDebug() << "close session-> File didn't open, serialization skipped";
         return;
     }
 

@@ -15,7 +15,7 @@ public:
     Serializator();
     ~Serializator();
 
-    void newSession(const std::string& fileName);
+    void newSession(const std::string fileName);
     void closeSession(sensor_data::Rasp0SensorData& rasp0SendorData,
                       sensor_data::Rasp3BSensorData& rasp3BSendorData);
     void loadSession(const std::string fileName);
