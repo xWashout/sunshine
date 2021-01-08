@@ -8,8 +8,8 @@ SunshineDesktop::SunshineDesktop(QWidget *parent)
     , ui(new Ui::SunshineDesktop)
     , mqttReceiverThread(&mqtt_wrapper::MqttWrapper::Receiver,
                          std::ref(mqttWrapper),
-                         std::ref(*this)
-                         )
+                         std::ref(*this))
+    , sessionAnalyzer(rasp0SendorData, rasp3BSendorData)
 {
     std::setlocale(LC_NUMERIC, "C"); // dot instead of comma in coding floating numbers
 
@@ -48,7 +48,6 @@ SunshineDesktop::SunshineDesktop(QWidget *parent)
     this->menu->addAction(this->measAnalyzerAction);
     this->menu->addSeparator();
 
-
     this->menuBar->setMaximumWidth(170);
     this->ui->stopCaptureDataButton->setMinimumHeight(40);
     this->ui->startCaptureDataButton->setMinimumHeight(40);
@@ -80,7 +79,8 @@ SunshineDesktop::SunshineDesktop(QWidget *parent)
 }
 
 SunshineDesktop::~SunshineDesktop()
-{   this->serializator.closeSession(rasp0SendorData, rasp3BSendorData);
+{
+    this->serializator.closeSession(rasp0SendorData, rasp3BSendorData);
     delete this->ui;
 }
 
@@ -197,7 +197,13 @@ void SunshineDesktop::loadSessionAction_clicked()
     if(fileName != "") {
         this->clenupMainWindow();
 
-        this->serializator.loadSession(fileName.toStdString(), this->rasp0SendorData, this->rasp3BSendorData);
+        if(this->serializator.loadSession(fileName.toStdString(), this->rasp0SendorData, this->rasp3BSendorData) == -1) {
+            QMessageBox msgBox;
+            msgBox.setWindowTitle("Error");
+            msgBox.setText("Empty file selected");
+            msgBox.exec();
+            return;
+        }
 
         this->chartRasp0Temp.readSerializedData(this->rasp0SendorData.getTemperatureMeasurements());
         this->chartRasp0Hum.readSerializedData(this->rasp0SendorData.getHumidityMeasurements());
@@ -205,11 +211,27 @@ void SunshineDesktop::loadSessionAction_clicked()
         this->chartRasp0Co2.readSerializedData(this->rasp0SendorData.getCo2Measurements());
 
         this->chartRasp3BTemp.readSerializedData(this->rasp3BSendorData.getTemperatureMeasurements());
-        qDebug() << "LLLL2L = " << this->rasp3BSendorData.getTemperatureMeasurements().size();
-        qDebug() << "LLLLL = " << this->rasp3BSendorData.getTvocMeasurements().size();
         this->chartRasp3BHum.readSerializedData(this->rasp3BSendorData.getHumidityMeasurements());
         this->chartRasp3BTvoc.readSerializedData(this->rasp3BSendorData.getTvocMeasurements());
         this->chartRasp3BCo2.readSerializedData(this->rasp3BSendorData.getCo2Measurements());
+
+        this->ui->tempRasp3BMeasLabel->setText(QString::number(
+                                                   this->rasp3BSendorData.getTemperatureMeasurements().back()));
+        this->ui->humRasp3BMeasLabel->setText(QString::number(
+                                                   this->rasp3BSendorData.getHumidityMeasurements().back()));
+        this->ui->tvocRasp3BMeasLabel->setText(QString::number(
+                                                   this->rasp3BSendorData.getTvocMeasurements().back()));
+        this->ui->co2Rasp3BMeasLabel->setText(QString::number(
+                                                   this->rasp3BSendorData.getCo2Measurements().back()));
+
+        this->ui->tempRasp0MeasLabel->setText(QString::number(
+                                                  this->rasp0SendorData.getTemperatureMeasurements().back()));
+        this->ui->humRasp0MeasLabel->setText(QString::number(
+                                                  this->rasp0SendorData.getHumidityMeasurements().back()));
+        this->ui->tvocRasp0MeasLabel->setText(QString::number(
+                                                  this->rasp0SendorData.getTvocMeasurements().back()));
+        this->ui->co2Rasp0MeasLabel->setText(QString::number(
+                                                   this->rasp0SendorData.getCo2Measurements().back()));
     } else {
         qDebug() <<"<Debug> No file selected";
         return;
@@ -224,12 +246,8 @@ void SunshineDesktop::loadSessionAction_clicked()
 
 void SunshineDesktop::measAnalyzerAction_clicked()
 {
-    this->dataStoringStatus = false;
-    this->ui->rasp0DataWidget->setEnabled(false);
-    this->ui->rasp3bDataWidget->setEnabled(false);
-    this->ui->startCaptureDataButton->setEnabled(false);
-    this->ui->stopCaptureDataButton->setEnabled(false);
     qDebug() << "<Debug> Action analyzer application";
+    this->sessionAnalyzer.exec();
 }
 
 void SunshineDesktop::on_startCaptureDataButton_clicked()

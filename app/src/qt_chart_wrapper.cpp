@@ -19,6 +19,7 @@ QT_CHARTS_USE_NAMESPACE
 QtChartWrapper::QtChartWrapper()
 {
     this->lineSeries = new QLineSeries();
+    this->lineSeriesLoaded = new QLineSeries();
     this->chart = new QChart();
     this->chartView = new QChartView();
     this->barSeries = new QBarSeries();
@@ -116,6 +117,7 @@ void QtChartWrapper::cleanCharts()
 {
     this->index = 0;
     this->lineSeries->clear();
+    this->lineSeriesLoaded->clear();
     this->barSeries->clear();
     this->barData = new QBarSet("");
 }
@@ -127,6 +129,16 @@ void QtChartWrapper::readSerializedData(const std::vector<double> &dataSet)
     for(const auto val : dataSet)
     {
         this->lineSeries->append(++index, val);
+    }
+    this->chart->addSeries(this->lineSeries);
+    this->chart->createDefaultAxes();
+}
+
+void QtChartWrapper::drawNextDataset(const std::vector<double> &dataSet)
+{
+    for(const auto val : dataSet)
+    {
+        this->lineSeriesLoaded->append(++index, val);
     }
     this->chart->addSeries(this->lineSeries);
     this->chart->createDefaultAxes();

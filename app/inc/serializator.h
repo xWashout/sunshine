@@ -14,11 +14,11 @@ public:
     Serializator();
     ~Serializator() = default;
 
-    void newSession(const std::string fileName,
+    void newSession(const std::string& fileName,
                     sensor_data::Rasp0SensorData& rasp0SendorData,
                     sensor_data::Rasp3BSensorData& rasp3BSendorData);
-    void loadSession(const std::string fileName, sensor_data::Rasp0SensorData& rasp0SendorData,
-                     sensor_data::Rasp3BSensorData& rasp3BSendorData);
+    int loadSession(const std::string& fileName, sensor_data::Rasp0SensorData& rasp0SendorData,
+                    sensor_data::Rasp3BSensorData& rasp3BSendorData);
     void closeSession(sensor_data::Rasp0SensorData& rasp0SendorData,
                       sensor_data::Rasp3BSensorData& rasp3BSendorData);
 

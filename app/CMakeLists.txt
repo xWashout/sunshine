@@ -5,6 +5,7 @@ add_executable(app
     src/sunshinedesktop.cpp
     inc/sunshinedesktop.h
     src/sunshinedesktop.ui
+    src/sessions_analyzer.ui
     inc/rasp3b_sensor_data.h
     src/rasp3b_sensor_data.cpp
     inc/rasp0_sensor_data.h
