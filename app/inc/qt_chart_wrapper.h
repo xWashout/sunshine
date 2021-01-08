@@ -13,6 +13,7 @@ class QtChartWrapper : public QObject
 public:
     QChartView *chartView;
     QLineSeries *lineSeries;
+    QLineSeries *lineSeriesLoaded;
     QBarSeries *barSeries;
     QChart *chart;
     QBarSet *barData;
@@ -29,6 +30,7 @@ public:
 
     void cleanCharts();
     void readSerializedData(const std::vector<double>& dataSet);
+    void drawNextDataset(const std::vector<double>& dataSet);
 
 private:
     int index = 0; // reset after measuremenetLimit value

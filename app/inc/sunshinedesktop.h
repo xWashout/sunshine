@@ -2,7 +2,6 @@
 #define SUNSHINEDESKTOP_H
 
 #include <QMainWindow>
-#include <QWindow>
 #include <mqtt_wrapper.h>
 #include <rasp0_sensor_data.h>
 #include <rasp3b_sensor_data.h>
@@ -43,7 +42,7 @@ class SunshineDesktop : public QMainWindow
     const std::string rasp0FreqCo2 { "rasp0FreqCo2" };
 
     QGridLayout *layout;
-    QMenu* menu;
+    QMenu *menu;
     QMenuBar *menuBar;
     QAction *newSessionAction;
     QAction *loadSessionAction;
