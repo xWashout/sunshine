@@ -80,9 +80,41 @@ SunshineDesktop::SunshineDesktop(QWidget *parent)
 }
 
 SunshineDesktop::~SunshineDesktop()
-{
-    this->serializator.closeSession(this->rasp0SendorData, this->rasp3BSendorData);
+{   this->serializator.closeSession(rasp0SendorData, rasp3BSendorData);
     delete this->ui;
+}
+
+void SunshineDesktop::clenupMainWindow()
+{
+    this->chartRasp0Temp.cleanCharts();
+    this->chartRasp0Hum.cleanCharts();
+    this->chartRasp0Tvoc.cleanCharts();
+    this->chartRasp0Co2.cleanCharts();
+
+    this->chartRasp3BTemp.cleanCharts();
+    this->chartRasp3BHum.cleanCharts();
+    this->chartRasp3BTvoc.cleanCharts();
+    this->chartRasp3BCo2.cleanCharts();
+
+    this->ui->tempRasp0MeasLabel->setText("0");
+    this->ui->humRasp0MeasLabel->setText("0");
+    this->ui->tvocRasp0MeasLabel->setText("0");
+    this->ui->co2Rasp0MeasLabel->setText("0");
+
+    this->ui->tempRasp3BMeasLabel->setText("0");
+    this->ui->humRasp3BMeasLabel->setText("0");
+    this->ui->tvocRasp3BMeasLabel->setText("0");
+    this->ui->co2Rasp3BMeasLabel->setText("0");
+
+    this->ui->tempFreqRasp0Input->setText("3");
+    this->ui->humFreqRasp0Input->setText("5");
+    this->ui->tvocFreqRasp0Input->setText("7");
+    this->ui->co2FreqRasp0Input->setText("11");
+
+    this->ui->tempFreqRasp0Input->setText("3");
+    this->ui->humFreqRasp0Input->setText("5");
+    this->ui->tvocFreqRasp0Input->setText("7");
+    this->ui->co2FreqRasp0Input->setText("11");
 }
 
 void SunshineDesktop::on_tempFreqRasp3BButton_clicked()
@@ -140,15 +172,7 @@ void SunshineDesktop::newSessionAction_clicked()
 
     qDebug() << "<Debug> Action load session application =" << fileName;
     if(fileName != "") {
-        this->chartRasp0Temp.cleanCharts();
-        this->chartRasp0Hum.cleanCharts();
-        this->chartRasp0Tvoc.cleanCharts();
-        this->chartRasp0Co2.cleanCharts();
-
-        this->chartRasp3BTemp.cleanCharts();
-        this->chartRasp3BHum.cleanCharts();
-        this->chartRasp3BTvoc.cleanCharts();
-        this->chartRasp3BCo2.cleanCharts();
+        this->clenupMainWindow();
 
         this->serializator.newSession(fileName.toStdString(), this->rasp0SendorData, this->rasp3BSendorData);
     } else {
@@ -171,7 +195,21 @@ void SunshineDesktop::loadSessionAction_clicked()
     qDebug() << "<Debug> Action save session application" << fileName;
 
     if(fileName != "") {
+        this->clenupMainWindow();
+
         this->serializator.loadSession(fileName.toStdString(), this->rasp0SendorData, this->rasp3BSendorData);
+
+        this->chartRasp0Temp.readSerializedData(this->rasp0SendorData.getTemperatureMeasurements());
+        this->chartRasp0Hum.readSerializedData(this->rasp0SendorData.getHumidityMeasurements());
+        this->chartRasp0Tvoc.readSerializedData(this->rasp0SendorData.getTvocMeasurements());
+        this->chartRasp0Co2.readSerializedData(this->rasp0SendorData.getCo2Measurements());
+
+        this->chartRasp3BTemp.readSerializedData(this->rasp3BSendorData.getTemperatureMeasurements());
+        qDebug() << "LLLL2L = " << this->rasp3BSendorData.getTemperatureMeasurements().size();
+        qDebug() << "LLLLL = " << this->rasp3BSendorData.getTvocMeasurements().size();
+        this->chartRasp3BHum.readSerializedData(this->rasp3BSendorData.getHumidityMeasurements());
+        this->chartRasp3BTvoc.readSerializedData(this->rasp3BSendorData.getTvocMeasurements());
+        this->chartRasp3BCo2.readSerializedData(this->rasp3BSendorData.getCo2Measurements());
     } else {
         qDebug() <<"<Debug> No file selected";
         return;

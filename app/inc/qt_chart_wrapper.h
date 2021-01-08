@@ -28,6 +28,7 @@ public:
     void addPointToBarChart(const double yValue);
 
     void cleanCharts();
+    void readSerializedData(const std::vector<double>& dataSet);
 
 private:
     int index = 0; // reset after measuremenetLimit value

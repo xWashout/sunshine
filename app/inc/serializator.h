@@ -4,13 +4,12 @@
 #include <QFile>
 #include <rasp0_sensor_data.h>
 #include <rasp3b_sensor_data.h>
+#include <memory>
 
 namespace tool {
 
 class Serializator
 {
-private:
-    FILE *sessionFile = NULL; // C FILE (fstream doesn't work with QT)
 public:
     Serializator();
     ~Serializator() = default;
@@ -22,6 +21,9 @@ public:
                      sensor_data::Rasp3BSensorData& rasp3BSendorData);
     void closeSession(sensor_data::Rasp0SensorData& rasp0SendorData,
                       sensor_data::Rasp3BSensorData& rasp3BSendorData);
+
+private:
+    std::unique_ptr<std::FILE, decltype(&std::fclose)> sessionFile;
 };
 
 } // namespace tool

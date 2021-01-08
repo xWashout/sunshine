@@ -64,6 +64,8 @@ public:
     SunshineDesktop(QWidget *parent = nullptr);
     ~SunshineDesktop();
 
+    void clenupMainWindow();
+
 private slots:
     void on_co2FreqRasp3BButton_clicked();
     void on_tvocFreqRasp3BButton_clicked();

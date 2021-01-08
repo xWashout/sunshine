@@ -5,10 +5,10 @@ namespace sensor_data {
 
 Rasp0SensorData::Rasp0SensorData()
 {
-    temperatureMeasurements.reserve(100);
-    humidityMeasurements.reserve(100);
-    tvocMeasurements.reserve(100);
-    co2Measurements.reserve(100);
+    temperatureMeasurements.reserve(300);
+    humidityMeasurements.reserve(300);
+    tvocMeasurements.reserve(300);
+    co2Measurements.reserve(300);
 }
 
 const std::vector<double> Rasp0SensorData::getTemperatureMeasurements() const
@@ -64,7 +64,7 @@ void Rasp0SensorData::clearData()
     this->co2Measurements.clear();
     this->tvocMeasurements.clear();
     this->humidityMeasurements.clear();
-    this->temperatureMeasurements();
+    this->temperatureMeasurements.clear();
     qDebug() << "Rasp0SensorData cleaned";
 }
 

@@ -85,7 +85,7 @@ void QtChartWrapper::addPointToLineChart(const double yValue)
 {
     if(this->index < this->measuremenetLimit) {
         this->chart->removeSeries(this->lineSeries);
-        lineSeries->append(++index, yValue);
+        this->lineSeries->append(++index, yValue);
         this->chart->addSeries(this->lineSeries);
         this->chart->createDefaultAxes();
     }
@@ -118,6 +118,18 @@ void QtChartWrapper::cleanCharts()
     this->lineSeries->clear();
     this->barSeries->clear();
     this->barData = new QBarSet("");
+}
+
+void QtChartWrapper::readSerializedData(const std::vector<double> &dataSet)
+{
+    this->chart->removeSeries(this->lineSeries);
+
+    for(const auto val : dataSet)
+    {
+        this->lineSeries->append(++index, val);
+    }
+    this->chart->addSeries(this->lineSeries);
+    this->chart->createDefaultAxes();
 }
 
 } // qt_chart_wrapper

@@ -20,6 +20,8 @@ add_executable(app
     )
 
 #target_compile_options(app PUBLIC -fsanitize=address)
+#set(CMAKE_CXX_FLAGS_DEBUG -fsanitize=address CACHE "" INTERNAL)
+#set(CMAKE_EXE_LINKER_FLAGS_DEBUG -fsanitize=address CACHE "" INTERNAL)
 
 target_link_libraries(app PRIVATE mqtt Qt5::Widgets Qt5::Charts paho-mqttpp3)
 qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
