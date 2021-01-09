@@ -68,6 +68,7 @@ void tool::SessionsAnalyzer::on_loadDataButton_clicked()
         qDebug() <<"<Debug> No file selected";
         return;
     }
+
     this->chartRasp0Temp.drawNextDataset(this->rasp0SendorData.getTemperatureMeasurements());
     this->chartRasp0Hum.drawNextDataset(this->rasp0SendorData.getHumidityMeasurements());
     this->chartRasp0Tvoc.drawNextDataset(this->rasp0SendorData.getTvocMeasurements());

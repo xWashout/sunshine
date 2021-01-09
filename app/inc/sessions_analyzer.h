@@ -36,7 +36,6 @@ class SessionsAnalyzer: public QDialog
 
     sensor_data::Rasp0SensorData rasp0SendorDataFile;
     sensor_data::Rasp3BSensorData rasp3BSendorDataFile;
-
 public:
     SessionsAnalyzer(sensor_data::Rasp0SensorData &rasp0SendorData, sensor_data::Rasp3BSensorData &rasp3BSendorData);
     ~SessionsAnalyzer();
