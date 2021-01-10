@@ -17,7 +17,7 @@ namespace qt_chart_wrapper{
 QT_CHARTS_USE_NAMESPACE
 
 QtChartWrapper::QtChartWrapper()
-{
+{   
     this->lineSeries = new QLineSeries();
     this->lineSeriesLoaded = new QLineSeries();
     this->chart = new QChart();
@@ -50,6 +50,8 @@ void QtChartWrapper::initLineChart(const QString title)
     this->chartView->setMinimumWidth(500);
     this->chartView->setChart(chart);
     this->chartView->setRenderHint(QPainter::Antialiasing);
+
+//    chartView->chart()->setTheme(QChart::ChartThemeBlueCerulean);
 }
 
 void QtChartWrapper::initBarChart(const QString title)
@@ -136,11 +138,11 @@ void QtChartWrapper::readSerializedData(const std::vector<double> &dataSet)
 
 void QtChartWrapper::drawNextDataset(const std::vector<double> &dataSet)
 {
-    for(const auto val : dataSet)
+    for(int i = 0; i < dataSet.size(); i++)
     {
-        this->lineSeriesLoaded->append(++index, val);
+        this->lineSeriesLoaded->append(i, dataSet[i]);
     }
-    this->chart->addSeries(this->lineSeries);
+    this->chart->addSeries(this->lineSeriesLoaded);
     this->chart->createDefaultAxes();
 }
 

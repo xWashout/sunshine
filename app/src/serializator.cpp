@@ -47,7 +47,7 @@ int Serializator::loadSession(const std::string& fileName,
     std::cerr << "fileName == " << fileName;
     if(this->sessionFile)
     {
-        qDebug() << "<Debug> File already opened, close file and open new";\
+        qDebug() << "<Debug> File already opened, close file and open new";
         this->closeSession(rasp0SendorData, rasp3BSendorData);
         this->sessionFile.reset(std::fopen(fileName.c_str(), "a+"));
     }
@@ -57,7 +57,7 @@ int Serializator::loadSession(const std::string& fileName,
     }
 
     if(this->sessionFile) {
-        qDebug() << "<Debug> File created correctly";
+        qDebug() << "<Debug> File loaded correctly";
     }
     else
     {
@@ -72,6 +72,8 @@ int Serializator::loadSession(const std::string& fileName,
         this->sessionFile.reset(nullptr);
         return -1;
     }
+    std::fseek (this->sessionFile.get(), 0, SEEK_SET);
+    qDebug() << "<Debug> elo1";
 
     constexpr int bufor = 100;
     char line[bufor];
@@ -79,13 +81,14 @@ int Serializator::loadSession(const std::string& fileName,
     char *words = nullptr;
     while(fgets(line, bufor, this->sessionFile.get()))
     {
+        qDebug() << "<Debug> elo1";
         if(line != nullptr)
         {
             words = std::strtok(line, delim);
         }
 
         while(words != nullptr)
-        {
+        {   qDebug() << "word=" << words;
             if(!std::strcmp(words, "rasp3b_temp"))
             {
                 words = std::strtok(nullptr, delim);
@@ -137,7 +140,10 @@ int Serializator::loadSession(const std::string& fileName,
             break;
         }
     }
-    this->sessionFile.reset(std::fopen(fileName.c_str(), "wr"));
+    qDebug() << "elo3";
+    this->sessionFile.reset(std::fopen(fileName.c_str(), "w")); // clean file
+    qDebug() << "elo4";
+    return 0;
 }
 
 void Serializator::closeSession(sensor_data::Rasp0SensorData& rasp0SendorData,

@@ -40,6 +40,8 @@ public:
     SessionsAnalyzer(sensor_data::Rasp0SensorData &rasp0SendorData, sensor_data::Rasp3BSensorData &rasp3BSendorData);
     ~SessionsAnalyzer();
 
+    void reject();
+
 private slots:
     void on_saveResultsButton_clicked();
     void on_loadDataButton_clicked();

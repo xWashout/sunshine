@@ -180,6 +180,7 @@ void SunshineDesktop::newSessionAction_clicked()
         return;
     }
 
+    this->dataStoringStatus = false;
     this->ui->rasp0DataWidget->setEnabled(true);
     this->ui->rasp3bDataWidget->setEnabled(true);
     this->ui->startCaptureDataButton->setEnabled(true);
@@ -197,7 +198,9 @@ void SunshineDesktop::loadSessionAction_clicked()
     if(fileName != "") {
         this->clenupMainWindow();
 
-        if(this->serializator.loadSession(fileName.toStdString(), this->rasp0SendorData, this->rasp3BSendorData) == -1) {
+        if(this->serializator.loadSession(fileName.toStdString(),
+                                          this->rasp0SendorData, this->rasp3BSendorData) == -1)
+        {
             QMessageBox msgBox;
             msgBox.setWindowTitle("Error");
             msgBox.setText("Empty file selected");
@@ -205,6 +208,9 @@ void SunshineDesktop::loadSessionAction_clicked()
             return;
         }
 
+        this->dataStoringStatus = false;
+
+        qDebug() << "size vec = " << this->rasp3BSendorData.getTemperatureMeasurements().size();
         this->chartRasp0Temp.readSerializedData(this->rasp0SendorData.getTemperatureMeasurements());
         this->chartRasp0Hum.readSerializedData(this->rasp0SendorData.getHumidityMeasurements());
         this->chartRasp0Tvoc.readSerializedData(this->rasp0SendorData.getTvocMeasurements());
@@ -215,23 +221,53 @@ void SunshineDesktop::loadSessionAction_clicked()
         this->chartRasp3BTvoc.readSerializedData(this->rasp3BSendorData.getTvocMeasurements());
         this->chartRasp3BCo2.readSerializedData(this->rasp3BSendorData.getCo2Measurements());
 
-        this->ui->tempRasp3BMeasLabel->setText(QString::number(
-                                                   this->rasp3BSendorData.getTemperatureMeasurements().back()));
-        this->ui->humRasp3BMeasLabel->setText(QString::number(
-                                                   this->rasp3BSendorData.getHumidityMeasurements().back()));
-        this->ui->tvocRasp3BMeasLabel->setText(QString::number(
-                                                   this->rasp3BSendorData.getTvocMeasurements().back()));
-        this->ui->co2Rasp3BMeasLabel->setText(QString::number(
-                                                   this->rasp3BSendorData.getCo2Measurements().back()));
+        if(this->rasp3BSendorData.getTemperatureMeasurements().size() != 0)
+        {
+            this->ui->tempRasp3BMeasLabel->setText(
+                        QString::number(this->rasp3BSendorData.getTemperatureMeasurements().back()));
+        }
 
-        this->ui->tempRasp0MeasLabel->setText(QString::number(
-                                                  this->rasp0SendorData.getTemperatureMeasurements().back()));
-        this->ui->humRasp0MeasLabel->setText(QString::number(
-                                                  this->rasp0SendorData.getHumidityMeasurements().back()));
-        this->ui->tvocRasp0MeasLabel->setText(QString::number(
-                                                  this->rasp0SendorData.getTvocMeasurements().back()));
-        this->ui->co2Rasp0MeasLabel->setText(QString::number(
-                                                   this->rasp0SendorData.getCo2Measurements().back()));
+        if(this->rasp3BSendorData.getHumidityMeasurements().size() != 0)
+        {
+            this->ui->humRasp3BMeasLabel->setText(
+                        QString::number(this->rasp3BSendorData.getHumidityMeasurements().back()));
+        }
+
+        if(this->rasp3BSendorData.getTvocMeasurements().size() != 0)
+        {
+            this->ui->tvocRasp3BMeasLabel->setText(
+                        QString::number(this->rasp3BSendorData.getTvocMeasurements().back()));
+        }
+
+        if(this->rasp3BSendorData.getCo2Measurements().size() != 0)
+        {
+            this->ui->co2Rasp3BMeasLabel->setText(
+                        QString::number(this->rasp3BSendorData.getCo2Measurements().back()));
+        }
+
+        if(this->rasp0SendorData.getTemperatureMeasurements().size() != 0)
+        {
+            this->ui->tempRasp0MeasLabel->setText(
+                        QString::number(this->rasp0SendorData.getTemperatureMeasurements().back()));
+        }
+
+        if(this->rasp0SendorData.getHumidityMeasurements().size() != 0)
+        {
+            this->ui->humRasp0MeasLabel->setText(
+                        QString::number(this->rasp0SendorData.getHumidityMeasurements().back()));
+        }
+
+        if(this->rasp0SendorData.getTvocMeasurements().size() != 0)
+        {
+            this->ui->tvocRasp0MeasLabel->setText(
+                        QString::number(this->rasp0SendorData.getTvocMeasurements().back()));
+        }
+
+        if(this->rasp0SendorData.getCo2Measurements().size() != 0)
+        {
+            this->ui->co2Rasp0MeasLabel->setText(
+                        QString::number(this->rasp0SendorData.getCo2Measurements().back()));
+        }
     } else {
         qDebug() <<"<Debug> No file selected";
         return;
@@ -246,8 +282,28 @@ void SunshineDesktop::loadSessionAction_clicked()
 
 void SunshineDesktop::measAnalyzerAction_clicked()
 {
-    qDebug() << "<Debug> Action analyzer application";
-    this->sessionAnalyzer.exec();
+    if(this->ui->stopCaptureDataButton->isEnabled())
+    {
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("Error");
+        msgBox.setText("You are capturing data right know!");
+        msgBox.exec();
+        return;
+    }
+    else if (!this->ui->stopCaptureDataButton->isEnabled() &&
+             !this->ui->startCaptureDataButton->isEnabled())
+    {
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("Error");
+        msgBox.setText("No data to compare in main window!");
+        msgBox.exec();
+        return;
+    }
+    else
+    {
+        qDebug() << "<Debug> Action analyzer application";
+        this->sessionAnalyzer.exec();
+    }
 }
 
 void SunshineDesktop::on_startCaptureDataButton_clicked()

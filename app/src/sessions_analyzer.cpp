@@ -34,15 +34,40 @@ SessionsAnalyzer::SessionsAnalyzer(sensor_data::Rasp0SensorData &rasp0SendorData
 
 SessionsAnalyzer::~SessionsAnalyzer()
 {
-    this->serializator.closeSession(this->rasp0SendorData, this->rasp3BSendorData);
+    this->serializator.closeSession(this->rasp0SendorDataFile, this->rasp3BSendorDataFile);
     delete this->ui;
+}
+
+void SessionsAnalyzer::reject()
+{
+    /* overrided QDialog function invoked after closing window */
+    this->chartRasp0Temp.cleanCharts();
+    this->chartRasp0Hum.cleanCharts();
+    this->chartRasp0Tvoc.cleanCharts();
+    this->chartRasp0Co2.cleanCharts();
+
+    this->chartRasp3BTemp.cleanCharts();
+    this->chartRasp3BHum.cleanCharts();
+    this->chartRasp3BTvoc.cleanCharts();
+    this->chartRasp3BCo2.cleanCharts();
+    QDialog::reject();
 }
 
 void tool::SessionsAnalyzer::on_loadDataButton_clicked()
 {
+    this->chartRasp0Temp.drawNextDataset(this->rasp0SendorData.getTemperatureMeasurements());
+    this->chartRasp0Hum.drawNextDataset(this->rasp0SendorData.getHumidityMeasurements());
+    this->chartRasp0Tvoc.drawNextDataset(this->rasp0SendorData.getTvocMeasurements());
+    this->chartRasp0Co2.drawNextDataset(this->rasp0SendorData.getCo2Measurements());
+
+    this->chartRasp3BTemp.drawNextDataset(this->rasp3BSendorData.getTemperatureMeasurements());
+    this->chartRasp3BHum.drawNextDataset(this->rasp3BSendorData.getHumidityMeasurements());
+    this->chartRasp3BTvoc.drawNextDataset(this->rasp3BSendorData.getTvocMeasurements());
+    this->chartRasp3BCo2.drawNextDataset(this->rasp3BSendorData.getCo2Measurements());
+
     QString fileName = QFileDialog::getOpenFileName(this,
         tr("Open Session"), "/home/washout/repos/sunshine/serialized_sessions");
-    qDebug() << "<Debug> Action save session application" << fileName;
+    qDebug() << "<Debug> (Analyzer) Action save session application" << fileName;
 
     if(fileName != "")
     {
@@ -52,7 +77,7 @@ void tool::SessionsAnalyzer::on_loadDataButton_clicked()
         this->serializator.loadSession(fileName.toStdString(),
                                        this->rasp0SendorDataFile,
                                        this->rasp3BSendorDataFile);
-
+        qDebug() << this->rasp3BSendorDataFile.getTemperatureMeasurements().size();
         this->chartRasp0Temp.readSerializedData(this->rasp0SendorDataFile.getTemperatureMeasurements());
         this->chartRasp0Hum.readSerializedData(this->rasp0SendorDataFile.getHumidityMeasurements());
         this->chartRasp0Tvoc.readSerializedData(this->rasp0SendorDataFile.getTvocMeasurements());
@@ -65,19 +90,9 @@ void tool::SessionsAnalyzer::on_loadDataButton_clicked()
     }
     else
     {
-        qDebug() <<"<Debug> No file selected";
+        qDebug() <<"<Debug> (Analyzer) No file selected";
         return;
     }
-
-    this->chartRasp0Temp.drawNextDataset(this->rasp0SendorData.getTemperatureMeasurements());
-    this->chartRasp0Hum.drawNextDataset(this->rasp0SendorData.getHumidityMeasurements());
-    this->chartRasp0Tvoc.drawNextDataset(this->rasp0SendorData.getTvocMeasurements());
-    this->chartRasp0Co2.drawNextDataset(this->rasp0SendorData.getCo2Measurements());
-
-    this->chartRasp3BTemp.drawNextDataset(this->rasp3BSendorData.getTemperatureMeasurements());
-    this->chartRasp3BHum.drawNextDataset(this->rasp3BSendorData.getHumidityMeasurements());
-    this->chartRasp3BTvoc.drawNextDataset(this->rasp3BSendorData.getTvocMeasurements());
-    this->chartRasp3BCo2.drawNextDataset(this->rasp3BSendorData.getCo2Measurements());
 }
 
 void tool::SessionsAnalyzer::on_saveResultsButton_clicked()
@@ -85,13 +100,13 @@ void tool::SessionsAnalyzer::on_saveResultsButton_clicked()
     QString fileName = QFileDialog::getSaveFileName(this,
         tr("Save Session"), "/home/washout/repos/sunshine/serialized_sessions");
 
-    qDebug() << "<Debug> Action load session application =" << fileName;
+    qDebug() << "<Debug> (Analyzer) Action load session application =" << fileName;
     if(fileName != "")
     {
     }
     else
     {
-        qDebug() << "<Debug> Session isn't created";
+        qDebug() << "<Debug> (Analyzer) Session isn't created";
         return;
     }
 }
