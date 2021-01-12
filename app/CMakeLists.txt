@@ -15,7 +15,6 @@ add_executable(app
     inc/sessions_analyzer.h
     src/sessions_analyzer.cpp
     inc/serializator.h
-    src/serializator.cpp
     inc/measurements_data.h
     src/measurements_data.cpp
     )
