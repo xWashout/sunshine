@@ -32,9 +32,12 @@ public:
     void readSerializedData(const std::vector<double>& dataSet);
     void drawNextDataset(const std::vector<double>& dataSet);
 
+    void initAndDefaultAxes();
+
 private:
     int index = 0; // reset after measuremenetLimit value
-    const int measuremenetLimit = 100;
+    int indexSessionAnalizator = 0;
+    const int measuremenetLimit = 1000;
 };
 
 } // namespace qt_chart_wrapper

@@ -6,26 +6,265 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1400</width>
-    <height>700</height>
+    <width>1850</width>
+    <height>990</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
+   <item row="0" column="1">
+    <widget class="QWidget" name="tableWidgetRasp3b" native="true">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QLabel" name="titleRasp3bAnalizatorLabel">
+        <property name="text">
+         <string>Microcontroller #1</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTableWidget" name="tableMinRasp3b">
+        <row>
+         <property name="text">
+          <string>Temperature</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Humidity</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>TVOC</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>CO2</string>
+         </property>
+        </row>
+        <column>
+         <property name="text">
+          <string>Min (File)</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Min (App)</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTableWidget" name="tableMaxRasp3b">
+        <row>
+         <property name="text">
+          <string>Temperature</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Humidity</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>TVOC</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>CO2</string>
+         </property>
+        </row>
+        <column>
+         <property name="text">
+          <string>Max (File)</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Max (App)</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTableWidget" name="tableAvgRasp3b">
+        <row>
+         <property name="text">
+          <string>Temperature</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Humidity</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>TVOC</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>CO2</string>
+         </property>
+        </row>
+        <column>
+         <property name="text">
+          <string>Avg (File)</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Avg (App)</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="6" column="1">
     <widget class="QPushButton" name="loadDataButton">
      <property name="text">
       <string>Load Data To Compare</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item row="8" column="1">
     <widget class="QPushButton" name="saveResultsButton">
      <property name="text">
       <string>Save Results</string>
      </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QWidget" name="tableWidgetRasp0" native="true">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QLabel" name="titleRasp0AnalizatorLabel">
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="text">
+         <string>Microcontroller #2</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTableWidget" name="tableMinRasp0">
+        <row>
+         <property name="text">
+          <string>Temperature</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Humidity</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>TVOC</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>CO2</string>
+         </property>
+        </row>
+        <column>
+         <property name="text">
+          <string>Min (File)</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Min (App)</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTableWidget" name="tableMaxRasp0">
+        <row>
+         <property name="text">
+          <string>Temperature</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Humidity</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>TVOC</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>CO2</string>
+         </property>
+        </row>
+        <column>
+         <property name="text">
+          <string>Max (File)</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Max (App)</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTableWidget" name="tableAvgRasp0">
+        <row>
+         <property name="text">
+          <string>Temperature</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Humidity</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>TVOC</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>CO2</string>
+         </property>
+        </row>
+        <column>
+         <property name="text">
+          <string>Avg (File)</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Avg (App)</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>

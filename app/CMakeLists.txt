@@ -16,8 +16,8 @@ add_executable(app
     src/sessions_analyzer.cpp
     inc/serializator.h
     src/serializator.cpp
-    inc/data_base_handler.h
-    src/data_base_handler.cpp
+    inc/measurements_data.h
+    src/measurements_data.cpp
     )
 
 #target_compile_options(app PUBLIC -fsanitize=address)

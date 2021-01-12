@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1405</width>
-    <height>781</height>
+    <width>1920</width>
+    <height>1080</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -229,7 +229,7 @@
        <item row="0" column="0">
         <widget class="QLabel" name="titleRasp3bLabel">
          <property name="text">
-          <string>Raspberry 3b+ Sensors</string>
+          <string>Microcontroller #1</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -648,7 +648,7 @@
        <item row="0" column="0">
         <widget class="QLabel" name="titleRasp0Label">
          <property name="text">
-          <string>Raspberry Zero Sensors</string>
+          <string>Microcontroller #2</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>

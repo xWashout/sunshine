@@ -9,7 +9,6 @@
 #include <thread>
 #include <serializator.h>
 #include <sessions_analyzer.h>
-#include <data_base_handler.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class SunshineDesktop; }
@@ -23,19 +22,20 @@ class SunshineDesktop : public QMainWindow
 
     std::thread mqttReceiverThread;
     mqtt_wrapper::MqttWrapper mqttWrapper;
-    sensor_data::Rasp0SensorData rasp0SendorData;
-    sensor_data::Rasp3BSensorData rasp3BSendorData;
-    tool::Serializator serializator;
+    sensor_data::Rasp0SensorData rasp0SensorData;
+    sensor_data::Rasp3BSensorData rasp3BSensorData;
+    tool::Serializator<sensor_data::Rasp0SensorData, sensor_data::Rasp3BSensorData> serializator;
     tool::SessionsAnalyzer sessionAnalyzer;
-    data_base::DataBaseHandler dataBaseHandler;
 
 //    std::thread mqttPublisherThread;
 
+    const std::string rasp3bInit { "rasp3bInit" };
     const std::string rasp3bFreqTemp { "rasp3bFreqTemp" };
     const std::string rasp3bFreqHum { "rasp3bFreqHum" };
     const std::string rasp3bFreqTvoc { "rasp3bFreqTvoc" };
     const std::string rasp3bFreqCo2 { "rasp3bFreqCo2" };
 
+    const std::string rasp0Init { "rasp0Init" };
     const std::string rasp0FreqTemp { "rasp0FreqTemp" };
     const std::string rasp0FreqHum { "rasp0FreqHumm" };
     const std::string rasp0FreqTvoc { "rasp0FreqTvoc" };

@@ -34,9 +34,11 @@ void QtChartWrapper::initLineChart(const QString title)
     this->lineSeries->setPointLabelsClipping(false);
     this->lineSeries->setPointLabelsColor("red");
 
+    this->lineSeriesLoaded->setPointLabelsFont(fontPoint);
+    this->lineSeriesLoaded->setPointLabelsClipping(false);
+    this->lineSeriesLoaded->setPointLabelsColor("red");
+
     this->chart->legend()->hide();
-    this->chart->addSeries(lineSeries);
-    this->chart->createDefaultAxes();
 
     QFont font;
     font.setPixelSize(18);
@@ -118,6 +120,7 @@ void QtChartWrapper::addPointToBarChart(const double yValue)
 void QtChartWrapper::cleanCharts()
 {
     this->index = 0;
+    this->indexSessionAnalizator = 0;
     this->lineSeries->clear();
     this->lineSeriesLoaded->clear();
     this->barSeries->clear();
@@ -128,9 +131,11 @@ void QtChartWrapper::readSerializedData(const std::vector<double> &dataSet)
 {
     this->chart->removeSeries(this->lineSeries);
 
+    this->lineSeries->
+            append(index++, 0.0); // to make scale 0 to 'first_val'
     for(const auto val : dataSet)
     {
-        this->lineSeries->append(++index, val);
+        this->lineSeries->append(index++, val);
     }
     this->chart->addSeries(this->lineSeries);
     this->chart->createDefaultAxes();
@@ -138,13 +143,25 @@ void QtChartWrapper::readSerializedData(const std::vector<double> &dataSet)
 
 void QtChartWrapper::drawNextDataset(const std::vector<double> &dataSet)
 {
-    for(int i = 0; i < dataSet.size(); i++)
+    this->chart->removeSeries(this->lineSeriesLoaded);
+    this->chart->removeSeries(this->lineSeries);
+
+    this->lineSeriesLoaded->
+            append(indexSessionAnalizator++, 0.0); // to make scale 0 to 'first_val'
+    for(const auto val : dataSet)
     {
-        this->lineSeriesLoaded->append(i, dataSet[i]);
+        this->lineSeriesLoaded->append(indexSessionAnalizator++, val);
     }
     this->chart->addSeries(this->lineSeriesLoaded);
     this->chart->createDefaultAxes();
 }
+
+void QtChartWrapper::initAndDefaultAxes()
+{
+    this->chart->addSeries(this->lineSeries);
+    this->chart->createDefaultAxes();
+}
+
 
 } // qt_chart_wrapper
 

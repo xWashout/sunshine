@@ -96,7 +96,7 @@ int MqttWrapper::Receiver(SunshineDesktop& sunshineDesktop)
     }
     catch (const mqtt::exception& exc) {
         std::cerr << "MQTT Exception in receiver -> " << exc.what() << "\n";
-        return 1;
+        //throw std::exception();
     }
     return 0;
 }
@@ -193,7 +193,7 @@ int MqttWrapper::Publisher(const char* data, const std::string topic)
     }
     catch (const mqtt::exception& exc) {
         std::cerr << exc.what() << std::endl;
-        return 1;
+        throw std::exception();
     }
     return 0;
 }
