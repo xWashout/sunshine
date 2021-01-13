@@ -749,31 +749,31 @@
      </item>
     </layout>
    </widget>
-   <widget class="QPushButton" name="stopCaptureDataButton">
+   <widget class="QWidget" name="startStopWidget" native="true">
     <property name="geometry">
      <rect>
-      <x>900</x>
-      <y>560</y>
-      <width>321</width>
-      <height>25</height>
+      <x>570</x>
+      <y>590</y>
+      <width>411</width>
+      <height>81</height>
      </rect>
     </property>
-    <property name="text">
-     <string>STOP CAPTURE DATA</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="startCaptureDataButton">
-    <property name="geometry">
-     <rect>
-      <x>1080</x>
-      <y>510</y>
-      <width>161</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>START CAPTURE DATA</string>
-    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="stopCaptureDataButton">
+       <property name="text">
+        <string>STOP CAPTURE DATA</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="startCaptureDataButton">
+       <property name="text">
+        <string>START CAPTURE DATA</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>

@@ -160,6 +160,7 @@ void QtChartWrapper::initAndDefaultAxes()
 {
     this->chart->addSeries(this->lineSeries);
     this->chart->createDefaultAxes();
+    this->lineSeries->append(0, 0.0);
 }
 
 

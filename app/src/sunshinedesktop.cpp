@@ -66,17 +66,10 @@ SunshineDesktop::SunshineDesktop(QWidget *parent)
     this->menu->addAction(this->newSessionAction);
     this->menu->addAction(this->loadSessionAction);
     this->menu->addAction(this->measAnalyzerAction);
-    this->menu->addSeparator();
 
-    this->menuBar->setMaximumWidth(170);
-    this->ui->stopCaptureDataButton->setMinimumHeight(40);
-    this->ui->startCaptureDataButton->setMinimumHeight(40);
-    this->ui->stopCaptureDataButton->setMaximumWidth(300);
-    this->ui->startCaptureDataButton->setMaximumWidth(300);
+    this->setMenuBar(this->menuBar);
 
-    this->layout->addWidget(this->menuBar, 0,0);
-    this->layout->addWidget(this->ui->startCaptureDataButton, 0,1);
-    this->layout->addWidget(this->ui->stopCaptureDataButton, 0,2);
+    this->layout->addWidget(this->ui->startStopWidget, 0,0);
 
     this->layout->addWidget(this->chartRasp3BTemp.chartView, 1, 0);
     this->layout->addWidget(this->chartRasp3BHum.chartView, 1, 1);
@@ -141,6 +134,26 @@ void SunshineDesktop::clenupMainWindow()
     this->ui->humFreqRasp0Input->setText("5");
     this->ui->tvocFreqRasp0Input->setText("7");
     this->ui->co2FreqRasp0Input->setText("11");
+
+    this->chartRasp3BTemp.initAndDefaultAxes();
+    this->chartRasp3BHum.initAndDefaultAxes();
+    this->chartRasp3BTvoc.initAndDefaultAxes();
+    this->chartRasp3BCo2.initAndDefaultAxes();
+
+    this->chartRasp0Temp.initAndDefaultAxes();
+    this->chartRasp0Hum.initAndDefaultAxes();
+    this->chartRasp0Tvoc.initAndDefaultAxes();
+    this->chartRasp0Co2.initAndDefaultAxes();
+
+    this->chartRasp3BTemp.chart->createDefaultAxes();
+    this->chartRasp3BHum.chart->createDefaultAxes();
+    this->chartRasp3BTvoc.chart->createDefaultAxes();
+    this->chartRasp3BCo2.chart->createDefaultAxes();
+
+    this->chartRasp0Temp.chart->createDefaultAxes();
+    this->chartRasp0Hum.chart->createDefaultAxes();
+    this->chartRasp0Tvoc.chart->createDefaultAxes();
+    this->chartRasp0Co2.chart->createDefaultAxes();
 }
 
 void SunshineDesktop::on_tempFreqRasp3BButton_clicked()
