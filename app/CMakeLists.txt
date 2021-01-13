@@ -17,6 +17,7 @@ add_executable(app
     inc/serializator.h
     inc/measurements_data.h
     src/measurements_data.cpp
+    inc/analyzer_table_cells_enum.h
     )
 
 #target_compile_options(app PUBLIC -fsanitize=address)

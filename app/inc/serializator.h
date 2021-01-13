@@ -12,6 +12,7 @@
 #include <string>
 #include <iostream>
 #include <cstring>
+#include <analyzer_table_cells_enum.h>
 
 namespace tool {
 
@@ -231,6 +232,22 @@ public:
         rasp3BSensorData.clearData();
 
         qDebug() << "<Debug> Serialization complete";
+    }
+
+
+    void saveCalculations(std::string filename, std::string fileNameLoaded, std::array<QTableWidgetItem*, 48> tableArray) {
+
+        std::unique_ptr<std::FILE, decltype(&std::fclose)> fileWithResults(nullptr, &std::fclose);
+        fileWithResults.reset(std::fopen(filename.c_str(), "w"));
+
+        if(fileWithResults)
+        {
+            qDebug() << "<Debug> File created correctly";
+        }
+        else
+        {
+            qDebug() << "<Debug> File didn't open";
+        }
     }
 
 private:

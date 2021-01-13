@@ -75,7 +75,7 @@ SessionsAnalyzer::~SessionsAnalyzer()
 void SessionsAnalyzer::reject()
 {
     /* overrided QDialog function invoking after closing window */
-
+    this->loadedFileName.clear();
     QDialog::reject();
 }
 
@@ -512,21 +512,23 @@ void SessionsAnalyzer::setCalculationsFromApp()
 
 void tool::SessionsAnalyzer::on_loadDataButton_clicked()
 {
-    QString fileName = QFileDialog::getOpenFileName(this,
+    this->loadedFileName = QFileDialog::getOpenFileName(this,
         tr("Open Session"), "/home/washout/repos/sunshine/serialized_sessions");
-    qDebug() << "<Debug> (Analyzer) Action save session application" << fileName;
+    qDebug() << "<Debug> (Analyzer) Action save session application" << this->loadedFileName;
 
-    if(fileName != "")
+    if(this->loadedFileName != "")
     {
         this->cleanAndInitializeData();
 
-        if(this->serializator.loadSession(fileName.toStdString(),
+        if(this->serializator.loadSession(this->loadedFileName.toStdString(),
                                           this->rasp0SensorDataFile, this->rasp3BSensorDataFile) == -1)
         {
             QMessageBox msgBox;
             msgBox.setWindowTitle("Error");
             msgBox.setText("Empty file selected");
             msgBox.exec();
+
+            this->loadedFileName.clear();
             return;
         }
         this->chartRasp0Temp.readSerializedData(this->rasp0SensorDataFile.getTemperatureMeasurements());
@@ -551,15 +553,15 @@ void tool::SessionsAnalyzer::on_loadDataButton_clicked()
 void tool::SessionsAnalyzer::on_saveResultsButton_clicked()
 {
     QString fileName = QFileDialog::getSaveFileName(this,
-        tr("Save Session"), "/home/washout/repos/sunshine/serialized_sessions");
+        tr("Save Session"), "/home/washout/repos/sunshine/sessions_analyzer_results");
 
-    qDebug() << "<Debug> (Analyzer) Action load session application =" << fileName;
     if(fileName != "")
     {
+        this->serializator.saveCalculations(fileName.toStdString(), this->loadedFileName.toStdString(), this->tableItemArray);
     }
     else
     {
-        qDebug() << "<Debug> (Analyzer) Session isn't created";
+        qDebug() << "<Debug> (Sessions Analyzer) Results not created.";
         return;
     }
 }
