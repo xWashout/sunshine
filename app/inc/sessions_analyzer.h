@@ -31,7 +31,6 @@ class SessionsAnalyzer: public QDialog
     qt_chart_wrapper::QtChartWrapper chartRasp0Temp;
 
     tool::Serializator<sensor_data::MeasurementsData, sensor_data::MeasurementsData> serializator;
-    qt_chart_wrapper::QtChartWrapper qtChartWrapper;
 
     sensor_data::MeasurementsData rasp0SensorDataBufor; // copied mutex class vectors
     sensor_data::MeasurementsData rasp3BSensorDataBufor; // copied mutex class vectors

@@ -16,10 +16,12 @@ namespace qt_chart_wrapper{
 
 QT_CHARTS_USE_NAMESPACE
 
-QtChartWrapper::QtChartWrapper()
+QtChartWrapper::QtChartWrapper(QString dataName)
 {   
     this->lineSeries = new QLineSeries();
+    this->lineSeries->setName("File Data");
     this->lineSeriesLoaded = new QLineSeries();
+    this->lineSeriesLoaded->setName(dataName);
     this->chart = new QChart();
     this->chartView = new QChartView();
     this->barSeries = new QBarSeries();
@@ -38,7 +40,8 @@ void QtChartWrapper::initLineChart(const QString title)
     this->lineSeriesLoaded->setPointLabelsClipping(false);
     this->lineSeriesLoaded->setPointLabelsColor("red");
 
-    this->chart->legend()->hide();
+    this->chart->legend()->setVisible(true);
+    this->chart->legend()->setAlignment(Qt::AlignBottom);
 
     QFont font;
     font.setPixelSize(18);

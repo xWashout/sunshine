@@ -19,7 +19,7 @@ public:
     QBarSet *barData;
     QBarCategoryAxis *axis;
 
-    QtChartWrapper();
+    QtChartWrapper(QString dataName);
     ~QtChartWrapper() = default;
 
     void initLineChart(const QString title);

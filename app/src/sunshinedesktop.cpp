@@ -10,6 +10,8 @@ SunshineDesktop::SunshineDesktop(QWidget *parent)
                          std::ref(mqttWrapper),
                          std::ref(*this))
     , sessionAnalyzer(rasp0SensorData, rasp3BSensorData)
+    , chartRasp3BCo2("Sensor CCS811"), chartRasp3BTvoc("Sensor CCS811"), chartRasp3BHum("Sensor HDC2010"), chartRasp3BTemp("Sensor HDC2010")
+    , chartRasp0Co2("Sensor CCS811"), chartRasp0Tvoc("Sensor CCS811"), chartRasp0Hum("Sensor BME280"), chartRasp0Temp("Sensor BME280")
 {
     std::setlocale(LC_NUMERIC, "C"); // dot instead of comma in coding floating numbers
 

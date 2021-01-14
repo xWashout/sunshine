@@ -6,7 +6,13 @@ namespace tool {
 
 SessionsAnalyzer::SessionsAnalyzer(sensor_data::Rasp0SensorData &rasp0SensorData,
                                    sensor_data::Rasp3BSensorData &rasp3BSensorData):
-    rasp0SensorData(rasp0SensorData), rasp3BSensorData(rasp3BSensorData), ui(new Ui::Dialog())
+      rasp0SensorData(rasp0SensorData)
+    , rasp3BSensorData(rasp3BSensorData)
+    , ui(new Ui::Dialog())
+    , chartRasp3BCo2("Application Data"), chartRasp3BTvoc("Application Data")
+    , chartRasp3BHum("Application Data"), chartRasp3BTemp("Application Data")
+    , chartRasp0Co2("Application Data"), chartRasp0Tvoc("Application Data")
+    , chartRasp0Hum("Application Data"), chartRasp0Temp("Application Data")
 {
     this->ui->setupUi(this);
     this->setWindowTitle("Sessions Analyzer");
