@@ -31,6 +31,16 @@ int MqttWrapper::Receiver(SunshineDesktop& sunshineDesktop)
     connect(this, SIGNAL(setTvocRasp0Signal(const double)), &sunshineDesktop, SLOT(setTvocRasp0Signal(const double)), Qt::QueuedConnection);
     connect(this, SIGNAL(setCo2Rasp0Signal(const double)), &sunshineDesktop, SLOT(setCo2Rasp0Signal(const double)), Qt::QueuedConnection);
 
+    connect(this, SIGNAL(setTempFreqRasp3BSignal(const double)), &sunshineDesktop, SLOT(setTempFreqRasp3BSignal(const double)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setHumFreqRasp3BSignal(const double)), &sunshineDesktop, SLOT(setHumFreqRasp3BSignal(const double)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setTvocFreqRasp3BSignal(const double)), &sunshineDesktop, SLOT(setTvocFreqRasp3BSignal(const double)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setCo2FreqRasp3BSignal(const double)), &sunshineDesktop, SLOT(setCo2FreqRasp3BSignal(const double)), Qt::QueuedConnection);
+
+    connect(this, SIGNAL(setTempFreqRasp0Signal(const double)), &sunshineDesktop, SLOT(setTempFreqRasp0Signal(const double)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setHumFreqRasp0Signal(const double)), &sunshineDesktop, SLOT(setHumFreqRasp0Signal(const double)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setTvocFreqRasp0Signal(const double)), &sunshineDesktop, SLOT(setTvocFreqRasp0Signal(const double)), Qt::QueuedConnection);
+    connect(this, SIGNAL(setCo2FreqRasp0Signal(const double)), &sunshineDesktop, SLOT(setCo2FreqRasp0Signal(const double)), Qt::QueuedConnection);
+
     mqtt::connect_options connOpts;
     connOpts.set_keep_alive_interval(20);
     connOpts.set_clean_session(true);
@@ -82,8 +92,32 @@ int MqttWrapper::Receiver(SunshineDesktop& sunshineDesktop)
             else if(msg->get_topic() == mqttConfData.rasp0Co2Topic) {
                 emit setCo2Rasp0Signal(dataFromMsg);
             }
+            else if(msg->get_topic() == mqttConfData.rasp3bFreqTemp) {
+                emit setTempFreqRasp3BSignal(dataFromMsg);
+            }
+            else if(msg->get_topic() == mqttConfData.rasp3bFreqHum) {
+                emit setHumFreqRasp3BSignal(dataFromMsg);
+            }
+            else if(msg->get_topic() == mqttConfData.rasp3bFreqTvoc) {
+                emit setTvocFreqRasp3BSignal(dataFromMsg);
+            }
+            else if(msg->get_topic() == mqttConfData.rasp3bFreqCo2) {
+                emit setCo2FreqRasp3BSignal(dataFromMsg);
+            }
+            else if(msg->get_topic() == mqttConfData.rasp0FreqTemp) {
+                emit setTempFreqRasp0Signal(dataFromMsg);
+            }
+            else if(msg->get_topic() == mqttConfData.rasp0FreqHum) {
+                emit setHumFreqRasp0Signal(dataFromMsg);
+            }
+            else if(msg->get_topic() == mqttConfData.rasp0FreqTvoc) {
+                emit setTvocFreqRasp0Signal(dataFromMsg);
+            }
+            else if(msg->get_topic() == mqttConfData.rasp0FreqCo2) {
+                emit setCo2FreqRasp0Signal(dataFromMsg);
+            }
             else {
-                std::cerr << "Topic not matched";
+                std::cerr << "Topic not matched -> TOPIC:" << msg->get_topic() << "\n";
             }
         }
 

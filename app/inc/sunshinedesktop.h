@@ -27,17 +27,13 @@ class SunshineDesktop : public QMainWindow
     tool::Serializator<sensor_data::Rasp0SensorData, sensor_data::Rasp3BSensorData> serializator;
     tool::SessionsAnalyzer sessionAnalyzer;
 
-//    std::thread mqttPublisherThread;
+    const std::string rasp3bFreqTemp { "rasp3BFreqTemp" };
+    const std::string rasp3bFreqHum { "rasp3BFreqHum" };
+    const std::string rasp3bFreqTvoc { "rasp3BFreqTvoc" };
+    const std::string rasp3bFreqCo2 { "rasp3BFreqCo2" };
 
-    const std::string rasp3bInit { "rasp3bInit" };
-    const std::string rasp3bFreqTemp { "rasp3bFreqTemp" };
-    const std::string rasp3bFreqHum { "rasp3bFreqHum" };
-    const std::string rasp3bFreqTvoc { "rasp3bFreqTvoc" };
-    const std::string rasp3bFreqCo2 { "rasp3bFreqCo2" };
-
-    const std::string rasp0Init { "rasp0Init" };
     const std::string rasp0FreqTemp { "rasp0FreqTemp" };
-    const std::string rasp0FreqHum { "rasp0FreqHumm" };
+    const std::string rasp0FreqHum { "rasp0FreqHum" };
     const std::string rasp0FreqTvoc { "rasp0FreqTvoc" };
     const std::string rasp0FreqCo2 { "rasp0FreqCo2" };
 
@@ -90,5 +86,15 @@ public slots:
     void setHumRasp0Signal(const double value);
     void setTvocRasp0Signal(const double value);
     void setCo2Rasp0Signal(const double value);
+
+    void setTempFreqRasp3BSignal(const double value);
+    void setHumFreqRasp3BSignal(const double value);
+    void setTvocFreqRasp3BSignal(const double value);
+    void setCo2FreqRasp3BSignal(const double value);
+
+    void setTempFreqRasp0Signal(const double value);
+    void setHumFreqRasp0Signal(const double value);
+    void setTvocFreqRasp0Signal(const double value);
+    void setCo2FreqRasp0Signal(const double value);
 };
 #endif // SUNSHINEDESKTOP_H

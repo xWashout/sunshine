@@ -90,11 +90,7 @@ SunshineDesktop::SunshineDesktop(QWidget *parent)
     this->ui->stopCaptureDataButton->setEnabled(false);
     this->ui->startCaptureDataButton->setEnabled(false);
 
-//    qDebug() << "<Debug> Meas freq init rasp0";
-//    this->mqttWrapper.Publisher(ui->tvocFreqRasp0Input->text().toStdString().data(), rasp0Init);
-
-//    qDebug() << "<Debug> Meas freq init rasp3b=" << ui->tvocFreqRasp0Input->text();
-//    this->mqttWrapper.Publisher(ui->tvocFreqRasp0Input->text().toStdString().data(), rasp3bInit);
+    this->mqttWrapper.Publisher("empty", "microcontrollerInit");
 }
 
 SunshineDesktop::~SunshineDesktop()
@@ -125,15 +121,7 @@ void SunshineDesktop::clenupMainWindow()
     this->ui->tvocRasp3BMeasLabel->setText("0");
     this->ui->co2Rasp3BMeasLabel->setText("0");
 
-    this->ui->tempFreqRasp0Input->setText("3");
-    this->ui->humFreqRasp0Input->setText("5");
-    this->ui->tvocFreqRasp0Input->setText("7");
-    this->ui->co2FreqRasp0Input->setText("11");
-
-    this->ui->tempFreqRasp0Input->setText("3");
-    this->ui->humFreqRasp0Input->setText("5");
-    this->ui->tvocFreqRasp0Input->setText("7");
-    this->ui->co2FreqRasp0Input->setText("11");
+    this->mqttWrapper.Publisher("empty", "microcontrollerInit");
 
     this->chartRasp3BTemp.initAndDefaultAxes();
     this->chartRasp3BHum.initAndDefaultAxes();
@@ -428,4 +416,44 @@ void SunshineDesktop::setCo2Rasp0Signal(const double value)
         this->ui->co2Rasp0MeasLabel->setText(QString::number(value));
         this->rasp0SensorData.addCo2Measurement(value);
     }
+}
+
+void SunshineDesktop::setTempFreqRasp3BSignal(const double value)
+{
+    this->ui->tempFreqRasp3BInput->setText(QString::number(value));
+}
+
+void SunshineDesktop::setHumFreqRasp3BSignal(const double value)
+{
+    this->ui->humFreqRasp3BInput->setText(QString::number(value));
+}
+
+void SunshineDesktop::setTvocFreqRasp3BSignal(const double value)
+{
+    this->ui->tvocFreqRasp3BInput->setText(QString::number(value));
+}
+
+void SunshineDesktop::setCo2FreqRasp3BSignal(const double value)
+{
+    this->ui->co2FreqRasp3BInput->setText(QString::number(value));
+}
+
+void SunshineDesktop::setTempFreqRasp0Signal(const double value)
+{
+    this->ui->tempFreqRasp0Input->setText(QString::number(value));
+}
+
+void SunshineDesktop::setHumFreqRasp0Signal(const double value)
+{
+    this->ui->humFreqRasp0Input->setText(QString::number(value));
+}
+
+void SunshineDesktop::setTvocFreqRasp0Signal(const double value)
+{
+    this->ui->tvocFreqRasp0Input->setText(QString::number(value));
+}
+
+void SunshineDesktop::setCo2FreqRasp0Signal(const double value)
+{
+    this->ui->co2FreqRasp0Input->setText(QString::number(value));
 }

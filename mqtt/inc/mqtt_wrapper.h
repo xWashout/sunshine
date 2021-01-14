@@ -31,6 +31,16 @@ signals:
     void setTvocRasp0Signal(const double value);
     void setCo2Rasp0Signal(const double value);
 
+    void setTempFreqRasp3BSignal(const double value);
+    void setHumFreqRasp3BSignal(const double value);
+    void setTvocFreqRasp3BSignal(const double value);
+    void setCo2FreqRasp3BSignal(const double value);
+
+    void setTempFreqRasp0Signal(const double value);
+    void setHumFreqRasp0Signal(const double value);
+    void setTvocFreqRasp0Signal(const double value);
+    void setCo2FreqRasp0Signal(const double value);
+
 public:
     MqttConfData mqttConfData;
 

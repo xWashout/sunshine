@@ -760,16 +760,16 @@
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QPushButton" name="stopCaptureDataButton">
+      <widget class="QPushButton" name="startCaptureDataButton">
        <property name="text">
-        <string>STOP CAPTURE DATA</string>
+        <string>START CAPTURE DATA</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="startCaptureDataButton">
+      <widget class="QPushButton" name="stopCaptureDataButton">
        <property name="text">
-        <string>START CAPTURE DATA</string>
+        <string>STOP CAPTURE DATA</string>
        </property>
       </widget>
      </item>
