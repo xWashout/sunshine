@@ -66,9 +66,10 @@ int MqttWrapper::Receiver(SunshineDesktop& sunshineDesktop)
             std::cerr << "<debug> parseReceivedData topic: " << msg->get_topic() << "\n";
             std::cerr << "<debug> parseReceivedData data: " << msg->to_string() << "\n";
 
-            const double dataFromMsg = QString::fromStdString(msg->to_string()).toDouble();
+            double dataFromMsg = QString::fromStdString(msg->to_string()).toDouble();
 
             if(msg->get_topic() == mqttConfData.rasp3bTempTopic) {
+                dataFromMsg -=6.0;
                 emit setTempRasp3BSignal(dataFromMsg);
             }
             else if(msg->get_topic() == mqttConfData.rasp3bHumTopic) {
@@ -81,6 +82,7 @@ int MqttWrapper::Receiver(SunshineDesktop& sunshineDesktop)
                 emit setCo2Rasp3BSignal(dataFromMsg);
             }
             else if(msg->get_topic() == mqttConfData.rasp0TempTopic) {
+                dataFromMsg -=6.0;
                 emit setTempRasp0Signal(dataFromMsg);
             }
             else if(msg->get_topic() == mqttConfData.rasp0HummTopic) {

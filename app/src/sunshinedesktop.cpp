@@ -25,13 +25,23 @@ SunshineDesktop::SunshineDesktop(QWidget *parent)
 
     this->chartRasp3BTemp.initLineChart("Temperature (Celsius)");
     this->chartRasp3BHum.initLineChart("Humidity (%)");
-    this->chartRasp3BTvoc.initLineChart("TVOC");
-    this->chartRasp3BCo2.initLineChart("Co2");
+    this->chartRasp3BTvoc.initLineChart("TVOC (ppb)");
+    this->chartRasp3BCo2.initLineChart("Co2 (ppm)");
 
     this->chartRasp0Temp.initLineChart("Temperature (Celsius)");
     this->chartRasp0Hum.initLineChart("Humidity (%)");
-    this->chartRasp0Tvoc.initLineChart("TVOC");
-    this->chartRasp0Co2.initLineChart("Co2");
+    this->chartRasp0Tvoc.initLineChart("TVOC (ppb)");
+    this->chartRasp0Co2.initLineChart("Co2 (ppm)");
+
+    this->chartRasp3BTemp.lineSeries->setName("Sensor HDC2010");
+    this->chartRasp3BHum.lineSeries->setName("Sensor HDC2010");
+    this->chartRasp3BTvoc.lineSeries->setName("Sensor CCS811");
+    this->chartRasp3BCo2.lineSeries->setName("Sensor CCS811");
+
+    this->chartRasp0Temp.lineSeries->setName("Sensor BME280");
+    this->chartRasp0Hum.lineSeries->setName("Sensor BME280");
+    this->chartRasp0Tvoc.lineSeries->setName("Sensor CCS811");
+    this->chartRasp0Co2.lineSeries->setName("Sensor CCS811");
 
     this->chartRasp3BTemp.initAndDefaultAxes();
     this->chartRasp3BHum.initAndDefaultAxes();
@@ -64,7 +74,7 @@ SunshineDesktop::SunshineDesktop(QWidget *parent)
     connect(this->loadSessionAction, &QAction::triggered, this, &SunshineDesktop::loadSessionAction_clicked);
     connect(this->measAnalyzerAction, &QAction::triggered, this, &SunshineDesktop::measAnalyzerAction_clicked);
 
-    this->menu = this->menuBar->addMenu("START");
+    this->menu = this->menuBar->addMenu("MENU");
     this->menu->addAction(this->newSessionAction);
     this->menu->addAction(this->loadSessionAction);
     this->menu->addAction(this->measAnalyzerAction);

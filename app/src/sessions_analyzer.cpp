@@ -18,13 +18,13 @@ SessionsAnalyzer::SessionsAnalyzer(sensor_data::Rasp0SensorData &rasp0SensorData
     this->setWindowTitle("Sessions Analyzer");
     this->chartRasp3BTemp.initLineChart("Temperature (Celsius)");
     this->chartRasp3BHum.initLineChart("Humidity (%)");
-    this->chartRasp3BTvoc.initLineChart("TVOC");
-    this->chartRasp3BCo2.initLineChart("Co2");
+    this->chartRasp3BTvoc.initLineChart("TVOC (ppb)");
+    this->chartRasp3BCo2.initLineChart("Co2 (ppm)");
 
     this->chartRasp0Temp.initLineChart("Temperature (Celsius)");
     this->chartRasp0Hum.initLineChart("Humidity (%)");
-    this->chartRasp0Tvoc.initLineChart("TVOC");
-    this->chartRasp0Co2.initLineChart("Co2");
+    this->chartRasp0Tvoc.initLineChart("TVOC (ppb)");
+    this->chartRasp0Co2.initLineChart("Co2 (ppm)");
 
     this->ui->gridLayout->addWidget(this->ui->loadDataButton, 0,0);
     this->ui->gridLayout->addWidget(this->ui->saveResultsButton, 0,1);
